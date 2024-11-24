@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\DataAccounting.Domain\DataAccounting.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Departments\Queries\" />
+    <Folder Include="Features\Employees\Queries\" />
+    <Folder Include="Features\Jobs\Queries\" />
+    <Folder Include="Features\Wages\Queries\" />
+  </ItemGroup>
+
+</Project>

@@ -3,9 +3,59 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{70CD2727-4978-47D0-AFB0-B009DED642F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccounting", "DataAccounting", "{811A5F35-1879-4908-8856-68B98A5CEEC3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccounting.API", "Services\DataAccounting\DataAccounting.API\DataAccounting.API.csproj", "{C964DB3E-45F4-4414-B262-1672BA7ABE5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccounting.Domain", "Services\DataAccounting\DataAccounting.Domain\DataAccounting.Domain.csproj", "{28CABDFB-4489-43FA-885F-5BC35F61EF33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccounting.Application", "Services\DataAccounting\DataAccounting.Application\DataAccounting.Application.csproj", "{D2432B97-E0F8-4DC0-887E-BCA6FF1DB4B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccounting.Infrastructure", "Services\DataAccounting\DataAccounting.Infrastructure\DataAccounting.Infrastructure.csproj", "{E585DFBB-E3D1-4601-BC22-FAE6BEE3FEA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildingBlocks", "BuildingBlocks", "{FABD289F-CEF7-4451-90F1-0DD49892123B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks", "BuildingBlocks\BuildingBlocks\BuildingBlocks.csproj", "{99AA40AC-679D-451A-802B-D2B06BC0101F}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C964DB3E-45F4-4414-B262-1672BA7ABE5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C964DB3E-45F4-4414-B262-1672BA7ABE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C964DB3E-45F4-4414-B262-1672BA7ABE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C964DB3E-45F4-4414-B262-1672BA7ABE5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28CABDFB-4489-43FA-885F-5BC35F61EF33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28CABDFB-4489-43FA-885F-5BC35F61EF33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28CABDFB-4489-43FA-885F-5BC35F61EF33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28CABDFB-4489-43FA-885F-5BC35F61EF33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2432B97-E0F8-4DC0-887E-BCA6FF1DB4B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2432B97-E0F8-4DC0-887E-BCA6FF1DB4B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2432B97-E0F8-4DC0-887E-BCA6FF1DB4B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2432B97-E0F8-4DC0-887E-BCA6FF1DB4B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E585DFBB-E3D1-4601-BC22-FAE6BEE3FEA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E585DFBB-E3D1-4601-BC22-FAE6BEE3FEA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E585DFBB-E3D1-4601-BC22-FAE6BEE3FEA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E585DFBB-E3D1-4601-BC22-FAE6BEE3FEA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99AA40AC-679D-451A-802B-D2B06BC0101F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99AA40AC-679D-451A-802B-D2B06BC0101F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99AA40AC-679D-451A-802B-D2B06BC0101F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99AA40AC-679D-451A-802B-D2B06BC0101F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{811A5F35-1879-4908-8856-68B98A5CEEC3} = {70CD2727-4978-47D0-AFB0-B009DED642F7}
+		{C964DB3E-45F4-4414-B262-1672BA7ABE5F} = {811A5F35-1879-4908-8856-68B98A5CEEC3}
+		{28CABDFB-4489-43FA-885F-5BC35F61EF33} = {811A5F35-1879-4908-8856-68B98A5CEEC3}
+		{D2432B97-E0F8-4DC0-887E-BCA6FF1DB4B8} = {811A5F35-1879-4908-8856-68B98A5CEEC3}
+		{E585DFBB-E3D1-4601-BC22-FAE6BEE3FEA3} = {811A5F35-1879-4908-8856-68B98A5CEEC3}
+		{99AA40AC-679D-451A-802B-D2B06BC0101F} = {FABD289F-CEF7-4451-90F1-0DD49892123B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {072A8A27-10E5-4352-86E7-DCE22A01D645}
