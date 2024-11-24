@@ -2,9 +2,7 @@
 
 namespace DataAccounting.Domain.Models;
 
-public class Job : IEntity<int>
+public class Job : Entity<int>
 {
-    public int Id { get; set; }
-
     public string Name { get; set; } = string.Empty;
 }

@@ -1,4 +1,8 @@
 ﻿using BuildingBlocks.CQRS;
+using DataAccounting.Application.Contracts.Persistence;
+using DataAccounting.Application.Exceptions;
+
+
 //using DataAccounting.Application.Contracts.Persistence;
 using DataAccounting.Domain.Models;
 using Microsoft.Extensions.Logging;
@@ -10,18 +14,21 @@ public class DeleteDepartmentCommand : ICommand<int>
     public int Id { get; set; }
 }
 
-public class DeleteDepartmentCommandHandler : ICommandHandler<DeleteDepartmentCommand, int>
+public class DeleteDepartmentCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<CreateDepartmentCommandHandler> logger)
+    : ICommandHandler<DeleteDepartmentCommand, int>
 {
     //private readonly IDepartmentRepository _departmentRepository;
-    private readonly ILogger<DeleteDepartmentCommandHandler> _logger;
+    //private readonly ILogger<DeleteDepartmentCommandHandler> _logger;
 
-    public DeleteDepartmentCommandHandler(
-        //IDepartmentRepository departmentRepository,
-        ILogger<DeleteDepartmentCommandHandler> logger)
-    {
-        //_departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    //public DeleteDepartmentCommandHandler(
+    //    //IDepartmentRepository departmentRepository,
+    //    ILogger<DeleteDepartmentCommandHandler> logger)
+    //{
+    //    //_departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
+    //    _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    //}
 
     public async Task<int> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
     {
@@ -38,6 +45,17 @@ public class DeleteDepartmentCommandHandler : ICommandHandler<DeleteDepartmentCo
         //_logger.LogInformation("{message} {departmenId}", $"Department {departmenToDelete.Id} is successfully deleted.", departmenToDelete.Id);
         //return departmenToDelete.Id;
 
-        return Random.Shared.Next();
+        var departments = await dbContext.Departments
+        .FindAsync([request.Id], cancellationToken: cancellationToken);
+
+        if (departments is null)
+        {
+            throw new DepartmentNotFoundException(request.Id);
+        }
+
+        dbContext.Departments.Remove(departments);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        return departments.Id;
     }
 }

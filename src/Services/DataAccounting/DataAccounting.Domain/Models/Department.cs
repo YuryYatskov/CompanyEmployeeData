@@ -2,9 +2,22 @@
 
 namespace DataAccounting.Domain.Models;
 
-public class Department : IEntity<int>
+public class Department : Entity<int>
 {
-    public int Id { get; set; }
-
     public string Name { get; set; } = string.Empty;
+
+    public static Department Create(string name)
+    {
+        Department department = new()
+        {
+            Name = name
+        };
+
+        return department;
+    }
+
+    public void Update(string name)
+    {
+        Name = name;
+    }
 }

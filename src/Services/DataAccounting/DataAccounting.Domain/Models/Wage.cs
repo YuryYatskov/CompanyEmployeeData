@@ -2,7 +2,7 @@
 
 namespace DataAccounting.Domain.Models;
 
-public class Wage : IEntity
+public class Wage : Entity
 {
     public int DepartmentId { get; set; }
 
