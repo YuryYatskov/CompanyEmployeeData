@@ -1,4 +1,4 @@
-﻿using DataAccounting.Application.Contracts.Persistence;
+﻿using DataAccounting.Application.Contracts;
 using DataAccounting.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;

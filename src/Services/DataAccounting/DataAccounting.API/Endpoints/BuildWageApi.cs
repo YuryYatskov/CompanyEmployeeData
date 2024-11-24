@@ -1,4 +1,5 @@
 ﻿using DataAccounting.Application.Features.Wages.Commands;
+using DataAccounting.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -9,47 +10,48 @@ public static class BuildWageApi
 {
     public static IEndpointRouteBuilder WageApi(this IEndpointRouteBuilder builder)
     {
-        builder.MapPost ("api/1.0/wage",
+        const string RouteName = "api/1.0/wage";
+
+        builder.MapPost (RouteName,
             async ([FromBody, Required] CreateWageCommand command,
                     IMediator mediator) =>
             {
                 var wage = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/wage/{result.id}", result);
-                return wage;
+                return Results.Created($"{RouteName}/{wage}", wage);
             })
+        .WithName("CreateWage")
         .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Create wage")
+        .WithDescription("Create wage");
 
-        builder.MapPut("api/1.0/wage",
+        builder.MapPut(RouteName,
             async ([FromBody, Required] UpdateWageCommand command,
                 IMediator mediator) =>
             {
                 var wage = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/wage/{result.id}", result);
-                return wage;
+                return Results.Ok(wage);
             })
-        .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .WithName("UpdateWage")
+        .Produces(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Update wage")
+        .WithDescription("Update wage");
 
-        builder.MapDelete("api/1.0/wage",
+        builder.MapDelete(RouteName,
             async ([FromBody, Required] DeleteWageCommand command,
                 IMediator mediator) =>
             {
                 var wage = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/wage/{result.id}", result);
-                return wage;
+                return Results.Ok(wage);
             })
-        .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .WithName("DeleteWage")
+        .Produces(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Delete wage")
+        .WithDescription("Delete wage");
 
         return builder;
     }

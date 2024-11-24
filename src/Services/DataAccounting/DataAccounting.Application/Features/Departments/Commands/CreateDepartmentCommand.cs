@@ -1,12 +1,7 @@
-﻿//using AutoMapper;
-//using BuildingBlocks.CQRS;
-//using DataAccounting.Application.Contracts.Persistence;
-using BuildingBlocks.CQRS;
-using DataAccounting.Application.Contracts.Persistence;
+﻿using BuildingBlocks.CQRS;
+using DataAccounting.Application.Contracts;
 using DataAccounting.Domain.Models;
 using FluentValidation;
-
-//using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Departments.Commands;
@@ -16,9 +11,9 @@ public class CreateDepartmentCommand : ICommand<int>
     public string Name { get; set; } = string.Empty;
 }
 
-public class AddDepartmentCommandValidator : AbstractValidator<CreateDepartmentCommand>
+public class CreateDepartmentCommandValidator : AbstractValidator<CreateDepartmentCommand>
 {
-    public AddDepartmentCommandValidator()
+    public CreateDepartmentCommandValidator()
     {
         RuleFor(p => p.Name)
           .NotEmpty().WithMessage("{Name} is required.")
@@ -33,30 +28,9 @@ public class CreateDepartmentCommandHandler(
     ILogger<CreateDepartmentCommandHandler> logger)
     : ICommandHandler<CreateDepartmentCommand, int>
 {
-    //private readonly IApplicationDbContext dbContext;
-    ////private readonly IDepartmentRepository _departmentRepository;
-    ////private readonly IMapper _mapper;
-    //private readonly ILogger<CreateDepartmentCommandHandler> _logger;
-
-    //public CreateDepartmentCommandHandler(
-    //    IApplicationDbContext dbContext,
-    //    //IDepartmentRepository departmentRepository,
-    //    //IMapper mapper,
-    //    ILogger<CreateDepartmentCommandHandler> logger)
-    //{
-    //    //_departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-    //    //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-    //    _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    //}
-
     public async Task<int> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
-        //var departmenEntity = _mapper.Map<Department>(request);
-        //var departmentAdded = await _departmentRepository.AddAsync(departmenEntity);
-
-        //_logger.LogInformation("{message} {departmentId}", $"Department {departmentAdded.Id} is successfully created.", departmentAdded.Id);
-
-        var department = Department.Create(request.Name); // CreateNewDepartment(request);
+        var department = Department.Create(request.Name);
         dbContext.Departments.Add(department);
         await dbContext.SaveChangesAsync(cancellationToken);
 
@@ -64,10 +38,4 @@ public class CreateDepartmentCommandHandler(
 
         return department.Id;
     }
-
-    //private Department CreateNewDepartment(CreateDepartmentCommand request)
-    //{
-    //    var newDepartment = Department.Create(request.Name);
-    //    return newDepartment;
-    //}
 }

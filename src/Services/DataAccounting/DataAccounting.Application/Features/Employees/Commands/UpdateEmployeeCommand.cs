@@ -1,19 +1,22 @@
-﻿//using AutoMapper;
-using BuildingBlocks.CQRS;
-using DataAccounting.Domain.Models;
-
-//using DataAccounting.Application.Contracts.Persistence;
-//using DataAccounting.Domain.Models;
+﻿using BuildingBlocks.CQRS;
+using DataAccounting.Application.Contracts;
+using DataAccounting.Application.Exceptions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Employees.Commands;
 
-public class UpdateEmployeeCommand : ICommand<Employee>
+public class UpdateEmployeeCommand : ICommand<int>
 {
     public int Id { get; set; }
 
     public string Name { get; set; } = string.Empty;
+
+    public string Address { get; set; } = string.Empty;
+
+    public string Phone { get; set; } = string.Empty;
+
+    public DateTime DateOfBirth { get; set; }
 }
 
 public class UpdateEmployeeCommandValidator : AbstractValidator<UpdateEmployeeCommand>
@@ -21,53 +24,55 @@ public class UpdateEmployeeCommandValidator : AbstractValidator<UpdateEmployeeCo
     public UpdateEmployeeCommandValidator()
     {
         RuleFor(p => p.Name)
-          .NotEmpty().WithMessage("{Name} is required.")
-          .NotNull()
-          .MinimumLength(2).WithMessage("{Name} must be longer than 2 characters.")
-          .MaximumLength(50).WithMessage("{Name} must not exceed 50 characters.");
+            .NotEmpty().WithMessage("{Name} is required.")
+            .NotNull()
+            .MinimumLength(2).WithMessage("{Name} must be longer than 2 characters.")
+            .MaximumLength(50).WithMessage("{Name} must not exceed 100 characters.");
+
+        RuleFor(p => p.Address)
+            .NotEmpty().WithMessage("{Address} is required.")
+            .NotNull()
+            .MinimumLength(2).WithMessage("{Address} must be longer than 2 characters.")
+            .MaximumLength(200).WithMessage("{Address} must not exceed 200 characters.");
+
+        RuleFor(p => p.Phone)
+            .NotEmpty().WithMessage("{Phone} is required.")
+            .NotNull()
+            .MinimumLength(11).WithMessage("{Phone} must be longer than 11 characters.")
+            .MaximumLength(12).WithMessage("{Phone} must not exceed 12 characters.");
+
+        RuleFor(p => p.DateOfBirth)
+            .NotEmpty()
+            .Must(date => date != default(DateTime)).WithMessage("Date of birth is required");
     }
 }
 
-public class UpdateEmployeeCommandHandler : ICommandHandler<UpdateEmployeeCommand, Employee>
+public class UpdateEmployeeCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<UpdateEmployeeCommandHandler> logger)
+    : ICommandHandler<UpdateEmployeeCommand, int>
 {
-    //private readonly IEmployeeRepository _departmentRepository;
-    //private readonly IMapper _mapper;
-    private readonly ILogger<UpdateEmployeeCommandHandler> _logger;
-
-    public UpdateEmployeeCommandHandler(
-        //IEmployeeRepository departmentRepository,
-        //IMapper mapper,
-        ILogger<UpdateEmployeeCommandHandler> logger)
+    public async Task<int> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
-    //    _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-    //    _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+        var employee = await dbContext.Employees
+                    .FindAsync([request.Id], cancellationToken: cancellationToken);
 
-    public async Task<Employee> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
-    {
-        //var departmenToUpdate = await _departmentRepository.GetByIdAsync(request.Id);
-        //if (departmenToUpdate is null)
-        //{
-        //    var message = $"Employee with identifier {request.Id} not exist on database.";
-        //    _logger.LogWarning("{message} {departmentId}", message, request.Id);
-        //    throw new KeyNotFoundException(message);
-        //}
-
-        //_mapper.Map(request, departmenToUpdate, typeof(UpdateEmployeeCommand), typeof(Employee));
-
-        //await _departmentRepository.UpdateAsync(departmenToUpdate);
-
-        //_logger.LogInformation("{message} {departmentId}", $"Employee {departmenToUpdate.Id} is successfully updated.", departmenToUpdate.Id);
-
-        //return departmenToUpdate.Id;
-
-        var departmenToUpdate = new Employee
+        if (employee is null)
         {
-            Id = Random.Shared.Next(),
-            Name = request.Name,
-        };
+            throw new EmployeeNotFoundException(request.Id);
+        }
 
-        return departmenToUpdate; //.Id;
+        employee.Update(
+            request.Name,
+            request.Address,
+            request.Phone,
+            request.DateOfBirth);
+
+        dbContext.Employees.Update(employee);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        logger.LogInformation("{message} {employeeId}", $"Employee {employee.Id} is successfully updated.", employee.Id);
+
+        return employee.Id;
     }
 }

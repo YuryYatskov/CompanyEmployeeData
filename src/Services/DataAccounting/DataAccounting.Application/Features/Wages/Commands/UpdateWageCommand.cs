@@ -1,76 +1,82 @@
-﻿//using AutoMapper;
-using BuildingBlocks.CQRS;
+﻿using BuildingBlocks.CQRS;
+using DataAccounting.Application.Contracts;
+using DataAccounting.Application.Exceptions;
+using DataAccounting.Application.Features.Departments.Commands;
 using DataAccounting.Domain.Models;
-
-//using DataAccounting.Application.Contracts.Persistence;
-//using DataAccounting.Domain.Models;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Wages.Commands;
 
 public class UpdateWageCommand : ICommand<Wage>
 {
-    public int Id { get; set; }
+    public int DepartmentId { get; set; }
 
-    public string Name { get; set; } = string.Empty;
+    public int JobId { get; set; }
+
+    public int EmployeeId { get; set; }
+
+    public DateTime DateOfWork { get; set; }
+
+    public decimal Salary { get; set; }
 }
 
 public class UpdateWageCommandValidator : AbstractValidator<UpdateWageCommand>
 {
     public UpdateWageCommandValidator()
     {
-        RuleFor(p => p.Name)
-          .NotEmpty().WithMessage("{Name} is required.")
-          .NotNull()
-          .MinimumLength(2).WithMessage("{Name} must be longer than 2 characters.")
-          .MaximumLength(50).WithMessage("{Name} must not exceed 50 characters.");
+        RuleFor(p => p.DepartmentId)
+            .NotNull().WithMessage("{DepartmentId} is required.")
+             .GreaterThan(0).WithMessage("{DepartmentId} must be greater than 0.");
+        RuleFor(p => p.JobId)
+            .NotNull().WithMessage("{JobId} is required.")
+            .GreaterThan(0).WithMessage("{JobId} must be greater than 0.");
+        RuleFor(p => p.EmployeeId)
+            .NotNull().WithMessage("{EmployeeId} is required.")
+            .GreaterThan(0).WithMessage("{EmployeeId} must be greater than 0.");
+        RuleFor(p => p.DateOfWork)
+            .NotEmpty()
+            .Must(date => date != default(DateTime)).WithMessage("Date of work is required");
+        RuleFor(p => p.Salary)
+            .NotNull().WithMessage("{Salary} is required.")
+            .GreaterThan(0).WithMessage("{Salary} must be greater than 0.");
     }
 }
 
-public class UpdateWageCommandHandler : ICommandHandler<UpdateWageCommand, Wage>
+public class UpdateWageCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<CreateDepartmentCommandHandler> logger)
+    : ICommandHandler<UpdateWageCommand, Wage>
 {
-    //private readonly IWageRepository _departmentRepository;
-    //private readonly IMapper _mapper;
-    private readonly ILogger<UpdateWageCommandHandler> _logger;
-
-    public UpdateWageCommandHandler(
-        //IWageRepository departmentRepository,
-        //IMapper mapper,
-        ILogger<UpdateWageCommandHandler> logger)
-    {
-    //    _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-    //    _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
     public async Task<Wage> Handle(UpdateWageCommand request, CancellationToken cancellationToken)
     {
-        //var departmenToUpdate = await _departmentRepository.GetByIdAsync(request.Id);
-        //if (departmenToUpdate is null)
-        //{
-        //    var message = $"Wage with identifier {request.Id} not exist on database.";
-        //    _logger.LogWarning("{message} {departmentId}", message, request.Id);
-        //    throw new KeyNotFoundException(message);
-        //}
+        var wage = await dbContext.Wages
+               .FirstOrDefaultAsync(x
+                    => x.DepartmentId == request.DepartmentId
+                    && x.JobId == request.JobId
+                    && x.EmployeeId == request.EmployeeId
+                    && x.DateOfWork == request.DateOfWork,
+                    cancellationToken: cancellationToken);
 
-        //_mapper.Map(request, departmenToUpdate, typeof(UpdateWageCommand), typeof(Wage));
-
-        //await _departmentRepository.UpdateAsync(departmenToUpdate);
-
-        //_logger.LogInformation("{message} {departmentId}", $"Wage {departmenToUpdate.Id} is successfully updated.", departmenToUpdate.Id);
-
-        //return departmenToUpdate.Id;
-
-        var wageToUpdate = new Wage
+        if (wage is null)
         {
-            DepartmentId = Random.Shared.Next(),
-            JobId= Random.Shared.Next(),
-            EmployeeId = Random.Shared.Next(),
-            Salary = Random.Shared.Next(),
-            //DateOfWor,
-        };
+            throw new WageNotFoundException(
+                request.DepartmentId,
+                request.JobId,
+                request.EmployeeId,
+                request.DateOfWork);
+        }
 
-        return wageToUpdate; //.Id;
+        wage.Update(request.Salary);
+
+        dbContext.Wages.Update(wage);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        logger.LogInformation("{message} {departmentId} {jobId} {employeeId} {dateOfWork}", $"Wage with DepartmentId - {wage.DepartmentId} and JobId - {wage.JobId} and EmployeeId - {wage.EmployeeId} and DateOfWork - {wage.DateOfWork} is successfully updated.",
+            wage.DepartmentId, wage.JobId, wage.EmployeeId, wage.DateOfWork);
+
+
+        return wage;
     }
 }

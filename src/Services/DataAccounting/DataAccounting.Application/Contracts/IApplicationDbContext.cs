@@ -1,7 +1,7 @@
 ﻿using DataAccounting.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccounting.Application.Contracts.Persistence;
+namespace DataAccounting.Application.Contracts;
 
 public interface IApplicationDbContext
 {

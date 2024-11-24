@@ -9,47 +9,48 @@ public static class BuildEmployeeApi
 {
     public static IEndpointRouteBuilder EmployeeApi(this IEndpointRouteBuilder builder)
     {
-        builder.MapPost ("api/1.0/employee",
+        const string RouteName = "api/1.0/employee";
+
+        builder.MapPost (RouteName,
             async ([FromBody, Required] CreateEmployeeCommand command,
                     IMediator mediator) =>
             {
                 var employee = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/employee/{result.id}", result);
-                return employee;
+                return Results.Created($"{RouteName}/{employee}", employee);
             })
+        .WithName("CreateEmployee")
         .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Create employee")
+        .WithDescription("Create employee");
 
-        builder.MapPut("api/1.0/employee",
+        builder.MapPut(RouteName,
             async ([FromBody, Required] UpdateEmployeeCommand command,
                 IMediator mediator) =>
             {
                 var employee = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/employee/{result.id}", result);
-                return employee;
+                return Results.Ok(employee);
             })
-        .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .WithName("UpdateEmployee")
+        .Produces(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Update employee")
+        .WithDescription("Update employee");
 
-        builder.MapDelete("api/1.0/employee",
+        builder.MapDelete(RouteName,
             async ([FromBody, Required] DeleteEmployeeCommand command,
                 IMediator mediator) =>
             {
                 var employee = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/employee/{result.id}", result);
-                return employee;
+                return Results.Ok(employee);
             })
-        .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .WithName("DeleteEmployee")
+        .Produces(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Delete employee")
+        .WithDescription("Delete employee");
 
         return builder;
     }

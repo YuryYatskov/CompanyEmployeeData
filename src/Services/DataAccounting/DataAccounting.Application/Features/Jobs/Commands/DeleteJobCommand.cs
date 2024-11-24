@@ -1,6 +1,6 @@
 ﻿using BuildingBlocks.CQRS;
-//using DataAccounting.Application.Contracts.Persistence;
-using DataAccounting.Domain.Models;
+using DataAccounting.Application.Contracts;
+using DataAccounting.Application.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Jobs.Commands;
@@ -10,34 +10,26 @@ public class DeleteJobCommand : ICommand<int>
     public int Id { get; set; }
 }
 
-public class DeleteJobCommandHandler : ICommandHandler<DeleteJobCommand, int>
+public class DeleteJobCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<DeleteJobCommandHandler> logger)
+    : ICommandHandler<DeleteJobCommand, int>
 {
-    //private readonly IJobRepository _departmentRepository;
-    private readonly ILogger<DeleteJobCommandHandler> _logger;
-
-    public DeleteJobCommandHandler(
-        //IJobRepository departmentRepository,
-        ILogger<DeleteJobCommandHandler> logger)
-    {
-        //_departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
     public async Task<int> Handle(DeleteJobCommand request, CancellationToken cancellationToken)
     {
-        //var departmenToDelete = await _departmentRepository.GetByIdAsync(request.Id);
-        //if (departmenToDelete is null)
-        //{
-        //    var message = $"Job with identifier {request.Id} not exist on database.";
-        //    _logger.LogWarning("{message} {departmenId}", message, request.Id);
-        //    throw new KeyNotFoundException(message);
-        //}
+        var job = await dbContext.Jobs
+            .FindAsync([request.Id], cancellationToken: cancellationToken);
 
-        //await _departmentRepository.DeleteAsync(departmenToDelete);
+        if (job is null)
+        {
+            throw new JobNotFoundException(request.Id);
+        }
 
-        //_logger.LogInformation("{message} {departmenId}", $"Job {departmenToDelete.Id} is successfully deleted.", departmenToDelete.Id);
-        //return departmenToDelete.Id;
+        dbContext.Jobs.Remove(job);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        return Random.Shared.Next();
+        logger.LogInformation("{message} {jobId}", $"Job {job.Id} is successfully deleted.", job.Id);
+
+        return job.Id;
     }
 }

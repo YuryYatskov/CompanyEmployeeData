@@ -1,61 +1,68 @@
-﻿//using AutoMapper;
-//using BuildingBlocks.CQRS;
-//using DataAccounting.Application.Contracts.Persistence;
-using BuildingBlocks.CQRS;
+﻿using BuildingBlocks.CQRS;
+using DataAccounting.Application.Contracts;
 using DataAccounting.Domain.Models;
 using FluentValidation;
-
-//using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Employees.Commands;
 
-public class CreateEmployeeCommand : ICommand<Employee>
+public class CreateEmployeeCommand : ICommand<int>
 {
     public string Name { get; set; } = string.Empty;
+
+    public string Address { get; set; } = string.Empty;
+
+    public string Phone { get; set; } = string.Empty;
+
+    public DateTime DateOfBirth { get; set; }
 }
 
-public class AddEmployeeCommandValidator : AbstractValidator<CreateEmployeeCommand>
+public class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployeeCommand>
 {
-    public AddEmployeeCommandValidator()
+    public CreateEmployeeCommandValidator()
     {
         RuleFor(p => p.Name)
           .NotEmpty().WithMessage("{Name} is required.")
           .NotNull()
           .MinimumLength(2).WithMessage("{Name} must be longer than 2 characters.")
-          .MaximumLength(50).WithMessage("{Name} must not exceed 50 characters.");
+          .MaximumLength(50).WithMessage("{Name} must not exceed 100 characters.");
+
+        RuleFor(p => p.Address)
+          .NotEmpty().WithMessage("{Address} is required.")
+          .NotNull()
+          .MinimumLength(2).WithMessage("{Address} must be longer than 2 characters.")
+          .MaximumLength(200).WithMessage("{Address} must not exceed 200 characters.");
+
+        RuleFor(p => p.Phone)
+          .NotEmpty().WithMessage("{Phone} is required.")
+          .NotNull()
+          .MinimumLength(11).WithMessage("{Phone} must be longer than 11 characters.")
+          .MaximumLength(12).WithMessage("{Phone} must not exceed 12 characters.");
+
+        RuleFor(p => p.DateOfBirth)
+            .NotEmpty()
+            .Must(date => date != default(DateTime)).WithMessage("Date of birth is required");
     }
 }
 
-public class CreateEmployeeCommandHandler : ICommandHandler<CreateEmployeeCommand, Employee>
+public class CreateEmployeeCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<CreateEmployeeCommandHandler> logger)
+    : ICommandHandler<CreateEmployeeCommand, int>
 {
-    //private readonly IEmployeeRepository _departmentRepository;
-    //private readonly IMapper _mapper;
-    private readonly ILogger<CreateEmployeeCommandHandler> _logger;
-
-    public CreateEmployeeCommandHandler(
-        //IEmployeeRepository departmentRepository,
-        //IMapper mapper,
-        ILogger<CreateEmployeeCommandHandler> logger)
+    public async Task<int> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
-        //_departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-        //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+        var employee = Employee.Create(
+            request.Name,
+            request.Address,
+            request.Phone,
+            request.DateOfBirth);
 
-    public async Task<Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
-    {
-        //var departmenEntity = _mapper.Map<Employee>(request);
-        //var departmentAdded = await _departmentRepository.AddAsync(departmenEntity);
+        dbContext.Employees.Add(employee);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        //_logger.LogInformation("{message} {departmentId}", $"Employee {departmentAdded.Id} is successfully created.", departmentAdded.Id);
+        logger.LogInformation("{message} {employeeId}", $"Employee {employee.Id} is successfully created.", employee.Id);
 
-        var departmentAdded = new Employee
-        {
-            Id = Random.Shared.Next(),
-            Name = request.Name,
-        };
-
-        return departmentAdded; //.Id;
+        return employee.Id;
     }
 }

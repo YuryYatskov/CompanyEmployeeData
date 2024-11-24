@@ -1,15 +1,12 @@
-﻿//using AutoMapper;
-using BuildingBlocks.CQRS;
-using DataAccounting.Domain.Models;
-
-//using DataAccounting.Application.Contracts.Persistence;
-//using DataAccounting.Domain.Models;
+﻿using BuildingBlocks.CQRS;
+using DataAccounting.Application.Contracts;
+using DataAccounting.Application.Exceptions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Jobs.Commands;
 
-public class UpdateJobCommand : ICommand<Job>
+public class UpdateJobCommand : ICommand<int>
 {
     public int Id { get; set; }
 
@@ -24,50 +21,32 @@ public class UpdateJobCommandValidator : AbstractValidator<UpdateJobCommand>
           .NotEmpty().WithMessage("{Name} is required.")
           .NotNull()
           .MinimumLength(2).WithMessage("{Name} must be longer than 2 characters.")
-          .MaximumLength(50).WithMessage("{Name} must not exceed 50 characters.");
+          .MaximumLength(100).WithMessage("{Name} must not exceed 100 characters.");
     }
 }
 
-public class UpdateJobCommandHandler : ICommandHandler<UpdateJobCommand, Job>
+public class UpdateJobCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<UpdateJobCommandHandler> logger)
+    : ICommandHandler<UpdateJobCommand, int>
 {
-    //private readonly IJobRepository _departmentRepository;
-    //private readonly IMapper _mapper;
-    private readonly ILogger<UpdateJobCommandHandler> _logger;
-
-    public UpdateJobCommandHandler(
-        //IJobRepository departmentRepository,
-        //IMapper mapper,
-        ILogger<UpdateJobCommandHandler> logger)
+    public async Task<int> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
     {
-    //    _departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-    //    _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+        var job = await dbContext.Jobs
+            .FindAsync([request.Id], cancellationToken: cancellationToken);
 
-    public async Task<Job> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
-    {
-        //var departmenToUpdate = await _departmentRepository.GetByIdAsync(request.Id);
-        //if (departmenToUpdate is null)
-        //{
-        //    var message = $"Job with identifier {request.Id} not exist on database.";
-        //    _logger.LogWarning("{message} {departmentId}", message, request.Id);
-        //    throw new KeyNotFoundException(message);
-        //}
-
-        //_mapper.Map(request, departmenToUpdate, typeof(UpdateJobCommand), typeof(Job));
-
-        //await _departmentRepository.UpdateAsync(departmenToUpdate);
-
-        //_logger.LogInformation("{message} {departmentId}", $"Job {departmenToUpdate.Id} is successfully updated.", departmenToUpdate.Id);
-
-        //return departmenToUpdate.Id;
-
-        var departmenToUpdate = new Job
+        if (job is null)
         {
-            Id = Random.Shared.Next(),
-            Name = request.Name,
-        };
+            throw new DepartmentNotFoundException(request.Id);
+        }
 
-        return departmenToUpdate; //.Id;
+        job.Update(request.Name);
+
+        dbContext.Jobs.Update(job);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        logger.LogInformation("{message} {jobId}", $"Job {job.Id} is successfully updated.", job.Id);
+
+        return job.Id;
     }
 }

@@ -9,15 +9,14 @@ public static class BuildDepartmentApi
 {
     public static IEndpointRouteBuilder DepartmentApi(this IEndpointRouteBuilder builder)
     {
-        builder.MapPost ("api/1.0/department",
+        const string RouteName = "api/1.0/department";
+
+        builder.MapPost (RouteName,
             async ([FromBody, Required] CreateDepartmentCommand command,
                     IMediator mediator) =>
             {
                 var department = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/department/{result.id}", result);
-                return Results.Ok(department);
+                return Results.Created($"{RouteName}/{department}", department); 
             })
         .WithName("CreateDepartment")
         .Produces(StatusCodes.Status201Created)
@@ -25,14 +24,11 @@ public static class BuildDepartmentApi
         .WithSummary("Create department")
         .WithDescription("Create department");
 
-        builder.MapPut("api/1.0/department",
+        builder.MapPut(RouteName,
             async ([FromBody, Required] UpdateDepartmentCommand command,
                 IMediator mediator) =>
             {
                 var department = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/department/{result.id}", result);
                 return Results.Ok(department);
             })
         .WithName("UpdateDepartment")
@@ -42,14 +38,11 @@ public static class BuildDepartmentApi
         .WithSummary("Update department")
         .WithDescription("Update department");
 
-        builder.MapDelete("api/1.0/department",
+        builder.MapDelete(RouteName,
             async ([FromBody, Required] DeleteDepartmentCommand command,
                 IMediator mediator) =>
             {
                 var department = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/department/{result.id}", result);
                 return Results.Ok(department);
             })
         .WithName("DeleteDepartment")

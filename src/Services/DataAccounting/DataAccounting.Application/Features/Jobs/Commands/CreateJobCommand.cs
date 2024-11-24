@@ -1,61 +1,41 @@
-﻿//using AutoMapper;
-//using BuildingBlocks.CQRS;
-//using DataAccounting.Application.Contracts.Persistence;
-using BuildingBlocks.CQRS;
+﻿using BuildingBlocks.CQRS;
+using DataAccounting.Application.Contracts;
 using DataAccounting.Domain.Models;
 using FluentValidation;
-
-//using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Jobs.Commands;
 
-public class CreateJobCommand : ICommand<Job>
+public class CreateJobCommand : ICommand<int>
 {
     public string Name { get; set; } = string.Empty;
 }
 
-public class AddJobCommandValidator : AbstractValidator<CreateJobCommand>
+public class CreateJobCommandValidator : AbstractValidator<CreateJobCommand>
 {
-    public AddJobCommandValidator()
+    public CreateJobCommandValidator()
     {
         RuleFor(p => p.Name)
           .NotEmpty().WithMessage("{Name} is required.")
           .NotNull()
           .MinimumLength(2).WithMessage("{Name} must be longer than 2 characters.")
-          .MaximumLength(50).WithMessage("{Name} must not exceed 50 characters.");
+          .MaximumLength(100).WithMessage("{Name} must not exceed 100 characters.");
     }
 }
 
-public class CreateJobCommandHandler : ICommandHandler<CreateJobCommand, Job>
+public class CreateJobCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<CreateJobCommandHandler> logger)
+    : ICommandHandler<CreateJobCommand, int>
 {
-    //private readonly IJobRepository _departmentRepository;
-    //private readonly IMapper _mapper;
-    private readonly ILogger<CreateJobCommandHandler> _logger;
-
-    public CreateJobCommandHandler(
-        //IJobRepository departmentRepository,
-        //IMapper mapper,
-        ILogger<CreateJobCommandHandler> logger)
+    public async Task<int> Handle(CreateJobCommand request, CancellationToken cancellationToken)
     {
-        //_departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-        //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+        var job = Job.Create(request.Name);
+        dbContext.Jobs.Add(job);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-    public async Task<Job> Handle(CreateJobCommand request, CancellationToken cancellationToken)
-    {
-        //var departmenEntity = _mapper.Map<Job>(request);
-        //var departmentAdded = await _departmentRepository.AddAsync(departmenEntity);
+        logger.LogInformation("{message} {jobId}", $"Job {job.Id} is successfully created.", job.Id);
 
-        //_logger.LogInformation("{message} {departmentId}", $"Job {departmentAdded.Id} is successfully created.", departmentAdded.Id);
-
-        var departmentAdded = new Job
-        {
-            Id = Random.Shared.Next(),
-            Name = request.Name,
-        };
-
-        return departmentAdded; //.Id;
+        return job.Id;
     }
 }

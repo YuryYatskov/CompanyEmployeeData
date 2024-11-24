@@ -1,64 +1,64 @@
-﻿//using AutoMapper;
-//using BuildingBlocks.CQRS;
-//using DataAccounting.Application.Contracts.Persistence;
-using BuildingBlocks.CQRS;
+﻿using BuildingBlocks.CQRS;
+using DataAccounting.Application.Contracts;
 using DataAccounting.Domain.Models;
 using FluentValidation;
-
-//using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Wages.Commands;
 
 public class CreateWageCommand : ICommand<Wage>
 {
-    public string Name { get; set; } = string.Empty;
+    public int DepartmentId { get; set; }
+
+    public int JobId { get; set; }
+
+    public int EmployeeId { get; set; }
+
+    public DateTime DateOfWork { get; set; }
+
+    public decimal Salary { get; set; }
 }
 
-public class AddWageCommandValidator : AbstractValidator<CreateWageCommand>
+public class CreateWageCommandValidator : AbstractValidator<CreateWageCommand>
 {
-    public AddWageCommandValidator()
+    public CreateWageCommandValidator()
     {
-        RuleFor(p => p.Name)
-          .NotEmpty().WithMessage("{Name} is required.")
-          .NotNull()
-          .MinimumLength(2).WithMessage("{Name} must be longer than 2 characters.")
-          .MaximumLength(50).WithMessage("{Name} must not exceed 50 characters.");
+        RuleFor(p => p.DepartmentId)
+            .NotNull().WithMessage("{DepartmentId} is required.")
+             .GreaterThan(0).WithMessage("{DepartmentId} must be greater than 0.");
+        RuleFor(p => p.JobId)
+            .NotNull().WithMessage("{JobId} is required.")
+            .GreaterThan(0).WithMessage("{JobId} must be greater than 0.");
+        RuleFor(p => p.EmployeeId)
+            .NotNull().WithMessage("{EmployeeId} is required.")
+            .GreaterThan(0).WithMessage("{EmployeeId} must be greater than 0.");
+        RuleFor(p => p.DateOfWork)
+            .NotEmpty()
+            .Must(date => date != default(DateTime)).WithMessage("Date of work is required");
+        RuleFor(p => p.Salary)
+            .NotNull().WithMessage("{Salary} is required.")
+            .GreaterThan(0).WithMessage("{Salary} must be greater than 0.");
     }
 }
 
-public class CreateWageCommandHandler : ICommandHandler<CreateWageCommand, Wage>
+public class CreateWageCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<CreateWageCommandHandler> logger)
+    : ICommandHandler<CreateWageCommand, Wage>
 {
-    //private readonly IWageRepository _departmentRepository;
-    //private readonly IMapper _mapper;
-    private readonly ILogger<CreateWageCommandHandler> _logger;
-
-    public CreateWageCommandHandler(
-        //IWageRepository departmentRepository,
-        //IMapper mapper,
-        ILogger<CreateWageCommandHandler> logger)
-    {
-        //_departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-        //_mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
-
     public async Task<Wage> Handle(CreateWageCommand request, CancellationToken cancellationToken)
     {
-        //var departmenEntity = _mapper.Map<Wage>(request);
-        //var departmentAdded = await _departmentRepository.AddAsync(departmenEntity);
+        var wage = Wage.Create(
+            request.DepartmentId,
+            request.JobId,
+            request.EmployeeId,
+            request.DateOfWork,
+            request.Salary);
+        dbContext.Wages.Add(wage);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        //_logger.LogInformation("{message} {departmentId}", $"Wage {departmentAdded.Id} is successfully created.", departmentAdded.Id);
+        logger.LogInformation("{message} {departmentId} {jobId} {employeeId}", $"Wage with DepartmentId - {wage.DepartmentId} and JobId - {wage.JobId} and EmployeeId - {wage.EmployeeId} is successfully created.", wage.DepartmentId, wage.JobId, wage.EmployeeId);
 
-        var wageAdded = new Wage
-        {
-            DepartmentId = Random.Shared.Next(),
-            JobId = Random.Shared.Next(),
-            EmployeeId = Random.Shared.Next(),
-            Salary = Random.Shared.Next(),
-            //DateOfWor,
-        };
-
-        return wageAdded; //.Id;
+        return wage;
     }
 }

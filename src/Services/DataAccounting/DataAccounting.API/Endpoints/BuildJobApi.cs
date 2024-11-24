@@ -1,4 +1,5 @@
 ﻿using DataAccounting.Application.Features.Jobs.Commands;
+using DataAccounting.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -9,47 +10,48 @@ public static class BuildJobApi
 {
     public static IEndpointRouteBuilder JobApi(this IEndpointRouteBuilder builder)
     {
-        builder.MapPost ("api/1.0/job",
+        const string RouteName = "api/1.0/job";
+
+        builder.MapPost (RouteName,
             async ([FromBody, Required] CreateJobCommand command,
                     IMediator mediator) =>
             {
                 var job = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/job/{result.id}", result);
-                return job;
+                return Results.Created($"{RouteName}/{job}", job);
             })
+        .WithName("CreateJob")
         .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Create job")
+        .WithDescription("Create job");
 
-        builder.MapPut("api/1.0/job",
+        builder.MapPut(RouteName,
             async ([FromBody, Required] UpdateJobCommand command,
                 IMediator mediator) =>
             {
                 var job = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/job/{result.id}", result);
-                return job;
+                return Results.Ok(job);
             })
-        .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .WithName("UpdateJob")
+        .Produces(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Update job")
+        .WithDescription("Update job");
 
-        builder.MapDelete("api/1.0/job",
+        builder.MapDelete(RouteName,
             async ([FromBody, Required] DeleteJobCommand command,
                 IMediator mediator) =>
             {
                 var job = await mediator.Send(command);
-                //var result = new { id = orderId };
-
-                //return Results.Created($"/job/{result.id}", result);
-                return job;
+                return Results.Ok(job);
             })
-        .Produces(StatusCodes.Status201Created)
-        .Produces(StatusCodes.Status404NotFound, typeof(string))
-        .Produces(StatusCodes.Status400BadRequest, typeof(string));
+        .WithName("DeleteJob")
+        .Produces(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .WithSummary("Delete job")
+        .WithDescription("Delete job");
 
         return builder;
     }

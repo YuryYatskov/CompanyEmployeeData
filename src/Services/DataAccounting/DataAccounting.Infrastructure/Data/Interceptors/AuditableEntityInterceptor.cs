@@ -1,7 +1,6 @@
-﻿using DataAccounting.Domain.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.EntityFrameworkCore;
 
 namespace DataAccounting.Infrastructure.Data.Interceptors;
 
@@ -23,20 +22,7 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
     {
         if (context == null) return;
 
-        //foreach (var entry in context.ChangeTracker.Entries<IEntity>())
-        //{
-        //    if (entry.State == EntityState.Added)
-        //    {
-        //        entry.Entity.CreatedBy = "";
-        //        entry.Entity.CreatedAt = DateTime.UtcNow;
-        //    }
 
-        //    if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
-        //    {
-        //        entry.Entity.LastModifiedBy = "";
-        //        entry.Entity.LastModified = DateTime.UtcNow;
-        //    }
-        //}
     }
 }
 

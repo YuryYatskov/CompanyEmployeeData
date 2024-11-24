@@ -1,4 +1,4 @@
-﻿using DataAccounting.Application.Contracts.Persistence;
+﻿using DataAccounting.Application.Contracts;
 using DataAccounting.Infrastructure.Data;
 using DataAccounting.Infrastructure.Data.Interceptors;
 using Microsoft.EntityFrameworkCore;

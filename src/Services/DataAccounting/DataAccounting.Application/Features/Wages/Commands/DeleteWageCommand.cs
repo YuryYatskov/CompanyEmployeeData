@@ -1,43 +1,52 @@
 ﻿using BuildingBlocks.CQRS;
-//using DataAccounting.Application.Contracts.Persistence;
-using DataAccounting.Domain.Models;
+using DataAccounting.Application.Contracts;
+using DataAccounting.Application.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Wages.Commands;
 
-public class DeleteWageCommand : ICommand<int>
+public class DeleteWageCommand : ICommand<bool>
 {
-    public int Id { get; set; }
+    public int DepartmentId { get; set; }
+
+    public int JobId { get; set; }
+
+    public int EmployeeId { get; set; }
+
+    public DateTime DateOfWork { get; set; }
 }
 
-public class DeleteWageCommandHandler : ICommandHandler<DeleteWageCommand, int>
+public class DeleteWageCommandHandler(
+    IApplicationDbContext dbContext,
+    ILogger<DeleteWageCommandHandler> logger)
+    : ICommandHandler<DeleteWageCommand, bool>
 {
-    //private readonly IWageRepository _departmentRepository;
-    private readonly ILogger<DeleteWageCommandHandler> _logger;
-
-    public DeleteWageCommandHandler(
-        //IWageRepository departmentRepository,
-        ILogger<DeleteWageCommandHandler> logger)
+    public async Task<bool> Handle(DeleteWageCommand request, CancellationToken cancellationToken)
     {
-        //_departmentRepository = departmentRepository ?? throw new ArgumentNullException(nameof(departmentRepository));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+        var wage = await dbContext.Wages
+            .FirstOrDefaultAsync(x 
+                => x.DepartmentId == request.DepartmentId
+                && x.JobId == request.JobId
+                && x.EmployeeId == request.EmployeeId
+                && x.DateOfWork == request.DateOfWork,
+                cancellationToken: cancellationToken);
 
-    public async Task<int> Handle(DeleteWageCommand request, CancellationToken cancellationToken)
-    {
-        //var departmenToDelete = await _departmentRepository.GetByIdAsync(request.Id);
-        //if (departmenToDelete is null)
-        //{
-        //    var message = $"Wage with identifier {request.Id} not exist on database.";
-        //    _logger.LogWarning("{message} {departmenId}", message, request.Id);
-        //    throw new KeyNotFoundException(message);
-        //}
+        if (wage is null)
+        {
+            throw new WageNotFoundException(
+                request.DepartmentId,
+                request.JobId,
+                request.EmployeeId,
+                request.DateOfWork);
+        }
 
-        //await _departmentRepository.DeleteAsync(departmenToDelete);
+        dbContext.Wages.Remove(wage);
+        await dbContext.SaveChangesAsync(cancellationToken);
 
-        //_logger.LogInformation("{message} {departmenId}", $"Wage {departmenToDelete.Id} is successfully deleted.", departmenToDelete.Id);
-        //return departmenToDelete.Id;
+        logger.LogInformation("{message} {departmentId} {jobId} {employeeId} {dateOfWork}", $"Wage with DepartmentId - {wage.DepartmentId} and JobId - {wage.JobId} and EmployeeId - {wage.EmployeeId} and DateOfWork - {wage.DateOfWork} is successfully deleted.",
+            wage.DepartmentId, wage.JobId, wage.EmployeeId, wage.DateOfWork);
 
-        return Random.Shared.Next();
+        return true;
     }
 }
