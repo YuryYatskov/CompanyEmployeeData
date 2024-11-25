@@ -8,8 +8,13 @@ public class DepartmentConfiguration : IEntityTypeConfiguration<Department>
 {
     public void Configure(EntityTypeBuilder<Department> builder)
     {
-        builder.HasKey(c => c.Id);
+        builder.HasKey(x => x.Id);
+
+        builder.Property(e => e.Id)
+            .ValueGeneratedOnAdd();
 
         builder.Property(c => c.Name).HasMaxLength(50).IsRequired();
+
+        builder.HasIndex(e => e.Name);
     }
 }

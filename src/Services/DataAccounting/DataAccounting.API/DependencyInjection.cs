@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Exceptions.Handler;
+﻿using BuildingBlocks.Builders;
+using BuildingBlocks.Exceptions.Handler;
 using DataAccounting.API.Endpoints;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -8,9 +9,11 @@ namespace DataAccounting.API;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration, string nameService)
     {
-
+        services.AddEndpointsApiExplorer();
+        services.AddSwagger(nameService);
+        
         services.AddExceptionHandler<CustomExceptionHandler>();
         services.AddHealthChecks()
             .AddSqlServer(configuration.GetConnectionString("Database")!);
@@ -39,7 +42,10 @@ public static class DependencyInjection
               .GetExecutingAssembly()
               .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
               ?.InformationalVersion;
-        });
+        })
+        .WithName("Version")
+        .WithSummary("Version")
+        .WithDescription("Version");
 
         app.DepartmentApi();
         app.JobApi();

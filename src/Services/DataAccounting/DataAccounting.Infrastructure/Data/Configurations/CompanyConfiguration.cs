@@ -1,4 +1,5 @@
-﻿using DataAccounting.Domain.Models;
+﻿using DataAccounting.Domain.Abstractions;
+using DataAccounting.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,10 +9,15 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
 {
     public void Configure(EntityTypeBuilder<Company> builder)
     {
-        builder.HasKey(c => c.Id);
+        builder.HasKey(x => x.Id);
+
+        builder.Property(e => e.Id)
+            .ValueGeneratedOnAdd();
 
         builder.Property(c => c.Name).HasMaxLength(100).IsRequired();
 
         builder.Property(c => c.Description).HasMaxLength(10000);
+
+        builder.HasIndex(e => e.Name);
     }
 }

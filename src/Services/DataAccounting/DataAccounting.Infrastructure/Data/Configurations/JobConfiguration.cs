@@ -8,8 +8,13 @@ public class JobConfiguration : IEntityTypeConfiguration<Job>
 {
     public void Configure(EntityTypeBuilder<Job> builder)
     {
-        builder.HasKey(c => c.Id);
+        builder.HasKey(x => x.Id);
+
+        builder.Property(e => e.Id)
+            .ValueGeneratedOnAdd();
 
         builder.Property(c => c.Name).HasMaxLength(100).IsRequired();
+
+        builder.HasIndex(e => e.Name);
     }
 }
