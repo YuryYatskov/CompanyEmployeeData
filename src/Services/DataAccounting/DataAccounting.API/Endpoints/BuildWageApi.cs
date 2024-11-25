@@ -1,4 +1,6 @@
-﻿using DataAccounting.Application.Features.Wages.Commands;
+﻿using DataAccounting.Application.Features.Jobs.Queries;
+using DataAccounting.Application.Features.Wages.Commands;
+using DataAccounting.Application.Features.Wages.Queries;
 using DataAccounting.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +13,35 @@ public static class BuildWageApi
     public static IEndpointRouteBuilder WageApi(this IEndpointRouteBuilder builder)
     {
         const string RouteName = "api/1.0/wage";
+
+        builder.MapGet($"{RouteName}s",
+        async ([AsParameters] GetWagesQuery query,
+                IMediator mediator) =>
+        {
+            var response = await mediator.Send(query);
+            return Results.Ok(response);
+
+        })
+        .WithName("GetWages")
+        .Produces<GetWagesResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get wages")
+        .WithDescription("Get wages");
+
+        builder.MapGet($"{RouteName}" + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}", async (
+            int departmentId,
+            int jobId,
+            int employeeId,
+            DateTime dateOfWork,
+            IMediator mediator) =>
+        {
+            var response = await mediator.Send(new GetWageQueryById(departmentId, jobId, employeeId, dateOfWork));
+
+            return Results.Ok(response);
+        })
+        .WithName("GetWageById")
+        .Produces<GetWageByIdResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get wage by id")
+        .WithDescription("Get wage by id");
 
         builder.MapPost (RouteName,
             async ([FromBody, Required] CreateWageCommand command,

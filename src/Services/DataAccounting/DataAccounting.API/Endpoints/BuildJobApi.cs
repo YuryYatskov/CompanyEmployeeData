@@ -1,5 +1,6 @@
-﻿using DataAccounting.Application.Features.Jobs.Commands;
-using DataAccounting.Domain.Models;
+﻿using DataAccounting.Application.Features.Departments.Queries;
+using DataAccounting.Application.Features.Jobs.Commands;
+using DataAccounting.Application.Features.Jobs.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,30 @@ public static class BuildJobApi
     public static IEndpointRouteBuilder JobApi(this IEndpointRouteBuilder builder)
     {
         const string RouteName = "api/1.0/job";
+
+        builder.MapGet($"{RouteName}s",
+        async ([AsParameters] GetJobsQuery query,
+                IMediator mediator) =>
+        {
+            var response = await mediator.Send(query);
+            return Results.Ok(response);
+
+        })
+        .WithName("GetJobs")
+        .Produces<GetJobsResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get jobs")
+        .WithDescription("Get jobs");
+
+        builder.MapGet($"{RouteName}" + "/{id}", async (int id, IMediator mediator) =>
+        {
+            var response = await mediator.Send(new GetJobQueryById(id));
+
+            return Results.Ok(response);
+        })
+        .WithName("GetJobById")
+        .Produces<GetJobByIdResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get job by id")
+        .WithDescription("Get job by id");
 
         builder.MapPost (RouteName,
             async ([FromBody, Required] CreateJobCommand command,

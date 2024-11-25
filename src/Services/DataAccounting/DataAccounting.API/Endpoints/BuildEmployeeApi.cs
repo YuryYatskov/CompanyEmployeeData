@@ -1,4 +1,6 @@
-﻿using DataAccounting.Application.Features.Employees.Commands;
+﻿using DataAccounting.Application.Features.Departments.Queries;
+using DataAccounting.Application.Features.Employees.Commands;
+using DataAccounting.Application.Features.Employees.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +12,30 @@ public static class BuildEmployeeApi
     public static IEndpointRouteBuilder EmployeeApi(this IEndpointRouteBuilder builder)
     {
         const string RouteName = "api/1.0/employee";
+
+        builder.MapGet($"{RouteName}s",
+        async ([AsParameters] GetEmployeesQuery query,
+                IMediator mediator) =>
+        {
+            var response = await mediator.Send(query);
+            return Results.Ok(response);
+
+        })
+        .WithName("GetEmployees")
+        .Produces<GetEmployeesResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get employees")
+        .WithDescription("Get employees");
+
+        builder.MapGet($"{RouteName}" + "/{id}", async (int id, IMediator mediator) =>
+        {
+            var response = await mediator.Send(new GetEmployeeQueryById(id));
+
+            return Results.Ok(response);
+        })
+        .WithName("GetEmployeeById")
+        .Produces<GetEmployeeByIdResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get employee by id")
+        .WithDescription("Get employee by id");
 
         builder.MapPost (RouteName,
             async ([FromBody, Required] CreateEmployeeCommand command,

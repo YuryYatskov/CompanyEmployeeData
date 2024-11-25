@@ -51,6 +51,7 @@ public static class DependencyInjection
         app.JobApi();
         app.EmployeeApi();
         app.WageApi();
+        app.CompanyApi();
 
         return app;
     }

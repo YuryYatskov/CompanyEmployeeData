@@ -1,4 +1,5 @@
 ﻿using DataAccounting.Application.Features.Departments.Commands;
+using DataAccounting.Application.Features.Departments.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,30 @@ public static class BuildDepartmentApi
     public static IEndpointRouteBuilder DepartmentApi(this IEndpointRouteBuilder builder)
     {
         const string RouteName = "api/1.0/department";
+        
+        builder.MapGet($"{RouteName}s",
+            async ([AsParameters] GetDepartmentsQuery query,
+                    IMediator mediator) =>
+            {
+                var response = await mediator.Send(query);
+                return Results.Ok(response);
+
+            })
+        .WithName("GetDepartments")
+        .Produces<GetDepartmentsResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get departments")
+        .WithDescription("Get departments");
+
+        builder.MapGet($"{RouteName}" + "/{id}", async (int id, IMediator mediator) =>
+        {
+            var response = await mediator.Send(new GetDepartmentQueryById(id));
+
+            return Results.Ok(response);
+        })
+        .WithName("GetDepartmentById")
+        .Produces<GetDepartmentByIdResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get department by id")
+        .WithDescription("Get department by id");
 
         builder.MapPost (RouteName,
             async ([FromBody, Required] CreateDepartmentCommand command,
