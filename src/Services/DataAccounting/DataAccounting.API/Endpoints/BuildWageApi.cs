@@ -1,7 +1,5 @@
-﻿using DataAccounting.Application.Features.Jobs.Queries;
-using DataAccounting.Application.Features.Wages.Commands;
+﻿using DataAccounting.Application.Features.Wages.Commands;
 using DataAccounting.Application.Features.Wages.Queries;
-using DataAccounting.Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -26,6 +24,19 @@ public static class BuildWageApi
         .Produces<GetWagesResponse>(StatusCodes.Status200OK)
         .WithSummary("Get wages")
         .WithDescription("Get wages");
+
+        builder.MapGet($"{RouteName}s/onlyTheLatest",
+        async ([AsParameters] GetWagesOnlyTheLatestQuery query,
+                IMediator mediator) =>
+        {
+            var response = await mediator.Send(query);
+            return Results.Ok(response);
+
+        })
+        .WithName("GetWagesOnlyTheLatest")
+        .Produces<GetWagesOnlyTheLatestResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get wages only the latest")
+        .WithDescription("Get wages  only the latest");
 
         builder.MapGet($"{RouteName}" + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}", async (
             int departmentId,
@@ -70,11 +81,14 @@ public static class BuildWageApi
         .WithSummary("Update wage")
         .WithDescription("Update wage");
 
-        builder.MapDelete(RouteName,
-            async ([FromBody, Required] DeleteWageCommand command,
-                IMediator mediator) =>
+        builder.MapDelete(RouteName + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}", async (
+            int departmentId,
+            int jobId,
+            int employeeId,
+            DateTime dateOfWork,
+            IMediator mediator) =>
             {
-                var wage = await mediator.Send(command);
+                var wage = await mediator.Send(new DeleteWageCommand(departmentId, jobId, employeeId, dateOfWork));
                 return Results.Ok(wage);
             })
         .WithName("DeleteWage")

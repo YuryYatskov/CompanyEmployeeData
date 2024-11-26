@@ -8,6 +8,11 @@ namespace DataAccounting.Application.Features.Jobs.Commands;
 public class DeleteJobCommand : ICommand<int>
 {
     public int Id { get; set; }
+
+    public DeleteJobCommand(int id)
+    {
+        Id = id;
+    }
 }
 
 public class DeleteJobCommandHandler(

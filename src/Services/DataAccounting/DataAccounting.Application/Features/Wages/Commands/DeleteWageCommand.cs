@@ -15,6 +15,14 @@ public class DeleteWageCommand : ICommand<bool>
     public int EmployeeId { get; set; }
 
     public DateTime DateOfWork { get; set; }
+
+    public DeleteWageCommand(int departmentId, int jobId, int employeeId, DateTime dateOfWork)
+    { 
+        DepartmentId = departmentId;
+        JobId = jobId;
+        EmployeeId = employeeId;
+        DateOfWork = dateOfWork;
+    }
 }
 
 public class DeleteWageCommandHandler(

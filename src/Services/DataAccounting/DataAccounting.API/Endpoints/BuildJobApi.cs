@@ -1,5 +1,4 @@
-﻿using DataAccounting.Application.Features.Departments.Queries;
-using DataAccounting.Application.Features.Jobs.Commands;
+﻿using DataAccounting.Application.Features.Jobs.Commands;
 using DataAccounting.Application.Features.Jobs.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +25,7 @@ public static class BuildJobApi
         .WithSummary("Get jobs")
         .WithDescription("Get jobs");
 
-        builder.MapGet($"{RouteName}" + "/{id}", async (int id, IMediator mediator) =>
+        builder.MapGet(RouteName + "/{id}", async (int id, IMediator mediator) =>
         {
             var response = await mediator.Send(new GetJobQueryById(id));
 
@@ -64,11 +63,9 @@ public static class BuildJobApi
         .WithSummary("Update job")
         .WithDescription("Update job");
 
-        builder.MapDelete(RouteName,
-            async ([FromBody, Required] DeleteJobCommand command,
-                IMediator mediator) =>
+        builder.MapDelete(RouteName + "/{id}", async (int id, IMediator mediator) =>
             {
-                var job = await mediator.Send(command);
+                var job = await mediator.Send(new DeleteJobCommand(id));
                 return Results.Ok(job);
             })
         .WithName("DeleteJob")

@@ -1,7 +1,4 @@
 ﻿using DataAccounting.Domain.Abstractions;
-using System.Net;
-using System.Numerics;
-using System.Xml.Linq;
 
 namespace DataAccounting.Domain.Models;
 

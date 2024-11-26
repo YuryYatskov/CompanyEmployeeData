@@ -20,31 +20,31 @@ public class CustomExceptionHandler
         {
             InternalServerException =>
             (
-                exception.Message,
+                exception.InnerException == null ? exception.Message : $"{exception.Message} {exception.InnerException.Message}",
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError
             ),
             ValidationException =>
             (
-                exception.Message,
+                exception.InnerException == null ? exception.Message : $"{exception.Message} {exception.InnerException.Message}",
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status400BadRequest
             ),
             BadRequestException =>
             (
-                exception.Message,
+                exception.InnerException == null ? exception.Message : $"{exception.Message} {exception.InnerException.Message}",
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status400BadRequest
             ),
             NotFoundException =>
             (
-                exception.Message,
+                exception.InnerException == null ? exception.Message : $"{exception.Message} {exception.InnerException.Message}",
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status404NotFound
             ),
             _ =>
             (
-                exception.Message,
+                exception.InnerException == null ? exception.Message : $"{exception.Message} {exception.InnerException.Message}",
                 exception.GetType().Name,
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError
             )

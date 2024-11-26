@@ -25,7 +25,7 @@ public static class BuildDepartmentApi
         .WithSummary("Get departments")
         .WithDescription("Get departments");
 
-        builder.MapGet($"{RouteName}" + "/{id}", async (int id, IMediator mediator) =>
+        builder.MapGet(RouteName + "/{id}", async (int id, IMediator mediator) =>
         {
             var response = await mediator.Send(new GetDepartmentQueryById(id));
 
@@ -63,11 +63,9 @@ public static class BuildDepartmentApi
         .WithSummary("Update department")
         .WithDescription("Update department");
 
-        builder.MapDelete(RouteName,
-            async ([FromBody, Required] DeleteDepartmentCommand command,
-                IMediator mediator) =>
+        builder.MapDelete(RouteName + "/{id}", async(int id, IMediator mediator) =>
             {
-                var department = await mediator.Send(command);
+                var department = await mediator.Send(new DeleteDepartmentCommand(id));
                 return Results.Ok(department);
             })
         .WithName("DeleteDepartment")

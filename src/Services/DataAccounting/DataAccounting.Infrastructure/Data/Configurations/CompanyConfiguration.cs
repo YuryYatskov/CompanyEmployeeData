@@ -1,5 +1,4 @@
-﻿using DataAccounting.Domain.Abstractions;
-using DataAccounting.Domain.Models;
+﻿using DataAccounting.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

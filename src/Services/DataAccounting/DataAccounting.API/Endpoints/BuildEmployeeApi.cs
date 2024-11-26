@@ -1,5 +1,4 @@
-﻿using DataAccounting.Application.Features.Departments.Queries;
-using DataAccounting.Application.Features.Employees.Commands;
+﻿using DataAccounting.Application.Features.Employees.Commands;
 using DataAccounting.Application.Features.Employees.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +25,7 @@ public static class BuildEmployeeApi
         .WithSummary("Get employees")
         .WithDescription("Get employees");
 
-        builder.MapGet($"{RouteName}" + "/{id}", async (int id, IMediator mediator) =>
+        builder.MapGet(RouteName + "/{id}", async (int id, IMediator mediator) =>
         {
             var response = await mediator.Send(new GetEmployeeQueryById(id));
 
@@ -64,11 +63,9 @@ public static class BuildEmployeeApi
         .WithSummary("Update employee")
         .WithDescription("Update employee");
 
-        builder.MapDelete(RouteName,
-            async ([FromBody, Required] DeleteEmployeeCommand command,
-                IMediator mediator) =>
+        builder.MapDelete(RouteName + "/{id}", async (int id, IMediator mediator) =>
             {
-                var employee = await mediator.Send(command);
+                var employee = await mediator.Send(new DeleteEmployeeCommand(id));
                 return Results.Ok(employee);
             })
         .WithName("DeleteEmployee")

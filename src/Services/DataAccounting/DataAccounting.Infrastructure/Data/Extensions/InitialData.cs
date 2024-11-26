@@ -61,6 +61,13 @@ internal class InitialData
             Wage.Create(6, 6, 1, new DateTime(2022, 09, 01), 3200),
             Wage.Create(7, 7, 2, new DateTime(2023, 10, 01), 5200),
             Wage.Create(8, 8, 3, new DateTime(2024, 11, 01), 6700),
-
+            Wage.Create(1, 1, 1, new DateTime(2021, 05, 01), 5000),
+            Wage.Create(4, 4, 4, new DateTime(2021, 05, 01), 4400),
+            Wage.Create(7, 7, 7, new DateTime(2022, 06, 01), 6900),
+            Wage.Create(8, 8, 8, new DateTime(2021, 07, 01), 9000),
+            Wage.Create(8, 8, 3, new DateTime(2024, 12, 01), 7100),
+            Wage.Create(1, 1, 1, new DateTime(2022, 04, 01), 5000),
+            Wage.Create(4, 4, 4, new DateTime(2022, 08, 01), 4900),
+            Wage.Create(8, 8, 8, new DateTime(2023, 10, 01), 9500),
         ];
 }

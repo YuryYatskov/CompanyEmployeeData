@@ -8,6 +8,11 @@ namespace DataAccounting.Application.Features.Departments.Commands;
 public class DeleteDepartmentCommand : ICommand<int>
 {
     public int Id { get; set; }
+
+    public DeleteDepartmentCommand(int id)
+    { 
+        Id = id;
+    }
 }
 
 public class DeleteDepartmentCommandHandler(
