@@ -1,7 +1,34 @@
+using Refit;
+using UserDataAccounting.Web.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddRefitClient<IDepartmentService>()
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri(builder.Configuration["ApiSettings:DataAccountingAddress"]!);
+    });
+
+builder.Services.AddRefitClient<IJobService>()
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri(builder.Configuration["ApiSettings:DataAccountingAddress"]!);
+    });
+
+builder.Services.AddRefitClient<IEmployeeService>()
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri(builder.Configuration["ApiSettings:DataAccountingAddress"]!);
+    });
+
+builder.Services.AddRefitClient<IWageSevices>()
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri(builder.Configuration["ApiSettings:DataAccountingAddress"]!);
+    });
 
 var app = builder.Build();
 

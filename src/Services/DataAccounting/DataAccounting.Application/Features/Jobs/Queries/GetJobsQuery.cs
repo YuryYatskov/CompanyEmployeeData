@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DataAccounting.Application.Features.Jobs.Queries;
 public record GetJobsQuery : IQuery<GetJobsResponse>;
 
-public record GetJobsResponse(List<Job> Jobss);
+public record GetJobsResponse(List<Job> Jobs);
 
 public class GetJobsQueryHandler(IApplicationDbContext dbContext)
     : IQueryHandler<GetJobsQuery, GetJobsResponse>

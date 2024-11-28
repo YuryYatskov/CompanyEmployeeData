@@ -7,7 +7,7 @@ namespace DataAccounting.Application.Features.Employees.Queries;
 
 public record GetEmployeesQuery : IQuery<GetEmployeesResponse>;
 
-public record GetEmployeesResponse(List<Employee> Employeess);
+public record GetEmployeesResponse(List<Employee> Employees);
 
 public class GetEmployeesQueryHandler(IApplicationDbContext dbContext)
     : IQueryHandler<GetEmployeesQuery, GetEmployeesResponse>

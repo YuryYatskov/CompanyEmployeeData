@@ -1,0 +1,48 @@
+﻿@page
+@model UserDataAccounting.Web.Pages.WageListModel
+@{
+    ViewData["Title"] = "Wage";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="Index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Wage</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Department Id</th>
+                    <th scope="col">Job Id</th>
+                    <th scope="col">Employee Id</th>
+                    <th scope="col">Date of work</th>
+                    <th scope="col">Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var wage in Model.WageList)
+                {
+                    <tr>
+                        <td>@wage.DepartmentId</td>
+                        <td>@wage.JobId</td>
+                        <td>@wage.EmployeeId</td>
+                        <td>@wage.DateOfWork</td>
+                        <td>@wage.Salary</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

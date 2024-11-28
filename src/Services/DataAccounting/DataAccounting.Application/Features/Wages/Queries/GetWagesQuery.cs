@@ -7,7 +7,7 @@ namespace DataAccounting.Application.Features.Wages.Queries;
 
 public record GetWagesQuery : IQuery<GetWagesResponse>;
 
-public record GetWagesResponse(List<Wage> Wagess);
+public record GetWagesResponse(List<Wage> Wages);
 
 public class GetWagesQueryHandler(IApplicationDbContext dbContext)
     : IQueryHandler<GetWagesQuery, GetWagesResponse>

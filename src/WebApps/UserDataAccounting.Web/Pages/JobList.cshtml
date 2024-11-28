@@ -1,0 +1,41 @@
+﻿@page
+@model UserDataAccounting.Web.Pages.JobListModel
+@{
+    ViewData["Title"] = "Job";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="Index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Job</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Id</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var job in Model.JobList)
+                {
+                    <tr>
+                        <td>@job.Name</td>
+                        <td>@job.Id</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

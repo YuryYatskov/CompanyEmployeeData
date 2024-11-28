@@ -7,7 +7,7 @@ namespace DataAccounting.Application.Features.Wages.Queries;
 
 public record GetWagesOnlyTheLatestQuery : IQuery<GetWagesOnlyTheLatestResponse>;
 
-public record GetWagesOnlyTheLatestResponse(List<Wage> Wagess);
+public record GetWagesOnlyTheLatestResponse(List<Wage> Wages);
 
 public class GetWagesOnlyTheLatestQueryHandler(IApplicationDbContext dbContext)
     : IQueryHandler<GetWagesOnlyTheLatestQuery, GetWagesOnlyTheLatestResponse>

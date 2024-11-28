@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuildingBlocks", "BuildingB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{7C4516D5-0D05-40E8-A7EF-116E3B21F597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserDataAccounting.Web", "WebApps\UserDataAccounting.Web\UserDataAccounting.Web.csproj", "{EB565DDD-2741-4BB4-9B39-A0BA661B4044}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserDataAccounting.Web", "WebApps\UserDataAccounting.Web\UserDataAccounting.Web.csproj", "{EB565DDD-2741-4BB4-9B39-A0BA661B4044}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
