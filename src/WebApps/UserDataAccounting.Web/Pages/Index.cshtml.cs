@@ -1,19 +1,20 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using UserDataAccounting.Web.Models;
+using UserDataAccounting.Web.Services;
 
-namespace UserDataAccounting.Web.Pages
+namespace UserDataAccounting.Web.Pages;
+
+public class IndexModel(
+    ICompanyService companyService,
+    ILogger<IndexModel> logger)
+        : PageModel
 {
-    public class IndexModel : PageModel
+    public CompanyModel Company { get; set; } = new();
+
+    public async Task OnGetAsync()
     {
-        private readonly ILogger<IndexModel> _logger;
+        var response = await companyService.GetCompanyById(1);
 
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
-        }
+        Company = response.Company;
     }
 }

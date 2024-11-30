@@ -24,6 +24,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Id</th>
+                    <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,9 +34,19 @@
                     <tr>
                         <td>@department.Name</td>
                         <td>@department.Id</td>
+                        <td class="text-center">
+                            <form method="post">
+                                <a asp-page="DepartmentDetail" asp-route-id="@department.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <button type="submit" asp-page-handler="DeleteDepartment" asp-route-id="@department.Id" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <div class="text-center">
+            <a asp-page="DepartmentDetail" class="btn btn-lg btn-block btn-success">Create department</a>
+        </div>
     </div>
 </div>

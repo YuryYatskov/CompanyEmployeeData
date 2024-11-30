@@ -1,12 +1,13 @@
 ﻿using BuildingBlocks.CQRS;
 using DataAccounting.Application.Contracts;
 using DataAccounting.Application.Exceptions;
+using DataAccounting.Domain.Models;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Departments.Commands;
 
-public class UpdateDepartmentCommand : ICommand<int>
+public class UpdateDepartmentCommand : ICommand<Department>
 {
     public int Id { get; set; }
 
@@ -28,9 +29,9 @@ public class UpdateDepartmentCommandValidator : AbstractValidator<UpdateDepartme
 public class UpdateDepartmentCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<CreateDepartmentCommandHandler> logger)
-    : ICommandHandler<UpdateDepartmentCommand, int>
+    : ICommandHandler<UpdateDepartmentCommand, Department>
 {
-    public async Task<int> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<Department> Handle(UpdateDepartmentCommand request, CancellationToken cancellationToken)
     {
         var department = await dbContext.Departments
             .FindAsync([request.Id], cancellationToken: cancellationToken);
@@ -47,6 +48,6 @@ public class UpdateDepartmentCommandHandler(
 
         logger.LogInformation("{message} {departmentId}", $"Department {department.Id} is successfully updated.", department.Id);
 
-        return department.Id;
+        return department;
     }
 }

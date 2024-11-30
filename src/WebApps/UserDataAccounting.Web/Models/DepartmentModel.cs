@@ -19,4 +19,4 @@ public record UpdateDepartmentRequest(int Id, string Name);
 
 public record UpdateDepartmentResponse(int Id);
 
-public record DeleteDepartmentRequest(int Id);
+public record DeleteDepartmentResponse(int Id);

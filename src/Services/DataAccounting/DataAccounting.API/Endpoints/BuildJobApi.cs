@@ -8,6 +8,8 @@ namespace DataAccounting.API.Endpoints;
 
 public static class BuildJobApi
 {
+    public record JobIdResponse(int Id);
+
     public static IEndpointRouteBuilder JobApi(this IEndpointRouteBuilder builder)
     {
         const string RouteName = "api/1.0/job";
@@ -41,7 +43,7 @@ public static class BuildJobApi
                     IMediator mediator) =>
             {
                 var job = await mediator.Send(command);
-                return Results.Created($"{RouteName}/{job}", job);
+                return Results.Created($"{RouteName}/{job.Id}", new JobIdResponse(job.Id));
             })
         .WithName("CreateJob")
         .Produces(StatusCodes.Status201Created)
@@ -54,7 +56,7 @@ public static class BuildJobApi
                 IMediator mediator) =>
             {
                 var job = await mediator.Send(command);
-                return Results.Ok(job);
+                return Results.Ok(new JobIdResponse(job.Id));
             })
         .WithName("UpdateJob")
         .Produces(StatusCodes.Status200OK)
@@ -64,9 +66,9 @@ public static class BuildJobApi
         .WithDescription("Update job");
 
         builder.MapDelete(RouteName + "/{id}", async (int id, IMediator mediator) =>
-            {
+        {
                 var job = await mediator.Send(new DeleteJobCommand(id));
-                return Results.Ok(job);
+                return Results.Ok(new JobIdResponse(job.Id));
             })
         .WithName("DeleteJob")
         .Produces(StatusCodes.Status200OK)

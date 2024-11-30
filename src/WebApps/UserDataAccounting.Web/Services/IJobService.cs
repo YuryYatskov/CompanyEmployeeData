@@ -10,15 +10,15 @@ public interface IJobService
     [Get($"{RouteName}s")]
     Task<GetJobsResponse> GetJobs();
 
-    //[Get(RouteName + "/{id}")]
-    //Task<GetJobByIdResponse> GetJobById(int id);
+    [Get(RouteName + "/{id}")]
+    Task<GetJobByIdResponse> GetJobById(int id);
 
-    //[Post(RouteName)]
-    //Task<CreateJobResponse> CreateJob(CreateJobRequest request);
+    [Post(RouteName)]
+    Task<CreateJobResponse> CreateJob(CreateJobRequest request);
 
-    //[Put(RouteName)]
-    //Task<UpdateJobResponse> UpdateJob(UpdateJobRequest request);
+    [Put(RouteName)]
+    Task<UpdateJobResponse> UpdateJob(UpdateJobRequest request);
 
-    //[Delete(RouteName + "/{id}")]
-    //Task<DeleteJobRequest> DeleteJob(int id);
+    [Delete(RouteName + "/{id}")]
+    Task<DeleteJobResponse> DeleteJob(int id);
 }

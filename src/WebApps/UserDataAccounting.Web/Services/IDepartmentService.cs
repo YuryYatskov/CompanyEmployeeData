@@ -20,5 +20,5 @@ public interface IDepartmentService
     Task<UpdateDepartmentResponse> UpdateDepartment(UpdateDepartmentRequest request);
 
     [Delete(RouteName + "/{id}")]
-    Task<DeleteDepartmentRequest> DeleteDepartment(int id);
+    Task<DeleteDepartmentResponse> DeleteDepartment(int id);
 }

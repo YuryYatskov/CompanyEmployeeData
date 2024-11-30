@@ -25,4 +25,4 @@ public record UpdateEmployeeRequest(int Id, string Name);
 
 public record UpdateEmployeeResponse(int Id);
 
-public record DeleteEmployeeRequest(int Id);
+public record DeleteEmployeeResponse(int Id);

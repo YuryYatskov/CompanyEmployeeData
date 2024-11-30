@@ -20,4 +20,13 @@ public class EmployeeListModel(
 
         return Page();
     }
+
+    public async Task<IActionResult> OnPostDeleteEmployeeAsync(int id)
+    {
+        logger.LogInformation("Delete employee");
+
+        await employeeService.DeleteEmployee(id);
+
+        return RedirectToPage("EmployeeList");
+    }
 }

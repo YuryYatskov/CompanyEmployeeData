@@ -3,11 +3,14 @@ using DataAccounting.Application.Features.Employees.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using static DataAccounting.API.Endpoints.BuildDepartmentApi;
 
 namespace DataAccounting.API.Endpoints;
 
 public static class BuildEmployeeApi
 {
+    public record EmployeeIdResponse(int Id);
+
     public static IEndpointRouteBuilder EmployeeApi(this IEndpointRouteBuilder builder)
     {
         const string RouteName = "api/1.0/employee";
@@ -41,7 +44,7 @@ public static class BuildEmployeeApi
                     IMediator mediator) =>
             {
                 var employee = await mediator.Send(command);
-                return Results.Created($"{RouteName}/{employee}", employee);
+                return Results.Created($"{RouteName}/{employee.Id}", new DepartmentIdResponse(employee.Id));
             })
         .WithName("CreateEmployee")
         .Produces(StatusCodes.Status201Created)
@@ -54,7 +57,7 @@ public static class BuildEmployeeApi
                 IMediator mediator) =>
             {
                 var employee = await mediator.Send(command);
-                return Results.Ok(employee);
+                return Results.Ok(new EmployeeIdResponse(employee.Id));
             })
         .WithName("UpdateEmployee")
         .Produces(StatusCodes.Status200OK)
@@ -66,7 +69,7 @@ public static class BuildEmployeeApi
         builder.MapDelete(RouteName + "/{id}", async (int id, IMediator mediator) =>
             {
                 var employee = await mediator.Send(new DeleteEmployeeCommand(id));
-                return Results.Ok(employee);
+                return Results.Ok(new EmployeeIdResponse(employee.Id));
             })
         .WithName("DeleteEmployee")
         .Produces(StatusCodes.Status200OK)

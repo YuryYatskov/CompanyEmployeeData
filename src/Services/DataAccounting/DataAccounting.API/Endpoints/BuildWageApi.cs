@@ -8,6 +8,8 @@ namespace DataAccounting.API.Endpoints;
 
 public static class BuildWageApi
 {
+    public record WageIdResponse(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork);
+
     public static IEndpointRouteBuilder WageApi(this IEndpointRouteBuilder builder)
     {
         const string RouteName = "api/1.0/wage";
@@ -59,7 +61,7 @@ public static class BuildWageApi
                     IMediator mediator) =>
             {
                 var wage = await mediator.Send(command);
-                return Results.Created($"{RouteName}/{wage}", wage);
+                return Results.Created(RouteName, new WageIdResponse(wage.DepartmentId, wage.JobId, wage.EmployeeId, wage.DateOfWork));
             })
         .WithName("CreateWage")
         .Produces(StatusCodes.Status201Created)
@@ -72,7 +74,7 @@ public static class BuildWageApi
                 IMediator mediator) =>
             {
                 var wage = await mediator.Send(command);
-                return Results.Ok(wage);
+                return Results.Ok(new WageIdResponse(wage.DepartmentId, wage.JobId, wage.EmployeeId, wage.DateOfWork));
             })
         .WithName("UpdateWage")
         .Produces(StatusCodes.Status200OK)
@@ -89,7 +91,7 @@ public static class BuildWageApi
             IMediator mediator) =>
             {
                 var wage = await mediator.Send(new DeleteWageCommand(departmentId, jobId, employeeId, dateOfWork));
-                return Results.Ok(wage);
+                return Results.Ok(new WageIdResponse(wage.DepartmentId, wage.JobId, wage.EmployeeId, wage.DateOfWork));
             })
         .WithName("DeleteWage")
         .Produces(StatusCodes.Status200OK)

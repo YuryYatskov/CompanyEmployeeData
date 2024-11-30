@@ -1,12 +1,13 @@
 ﻿using BuildingBlocks.CQRS;
 using DataAccounting.Application.Contracts;
 using DataAccounting.Application.Exceptions;
+using DataAccounting.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Wages.Commands;
 
-public class DeleteWageCommand : ICommand<bool>
+public class DeleteWageCommand : ICommand<Wage>
 {
     public int DepartmentId { get; set; }
 
@@ -28,9 +29,9 @@ public class DeleteWageCommand : ICommand<bool>
 public class DeleteWageCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<DeleteWageCommandHandler> logger)
-    : ICommandHandler<DeleteWageCommand, bool>
+    : ICommandHandler<DeleteWageCommand, Wage>
 {
-    public async Task<bool> Handle(DeleteWageCommand request, CancellationToken cancellationToken)
+    public async Task<Wage> Handle(DeleteWageCommand request, CancellationToken cancellationToken)
     {
         var wage = await dbContext.Wages
             .FirstOrDefaultAsync(x 
@@ -55,6 +56,6 @@ public class DeleteWageCommandHandler(
         logger.LogInformation("{message} {departmentId} {jobId} {employeeId} {dateOfWork}", $"Wage with DepartmentId - {wage.DepartmentId} and JobId - {wage.JobId} and EmployeeId - {wage.EmployeeId} and DateOfWork - {wage.DateOfWork} is successfully deleted.",
             wage.DepartmentId, wage.JobId, wage.EmployeeId, wage.DateOfWork);
 
-        return true;
+        return wage;
     }
 }

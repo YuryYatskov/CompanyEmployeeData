@@ -1,0 +1,55 @@
+﻿@page
+@model UserDataAccounting.Web.Pages.EmployeeDetailModel
+@{
+    ViewData["Title"] = "EmployeeDetail";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-page="/EmployeeList">Employee</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        @if (Model.Id == 0)
+        {
+            <form asp-page-handler="AddEmployee" method="post" name="addEmployeeForm" id="add_employee_form">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input asp-for="Name" type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="form-control-plaintext">
+                    <button type="submit" class="btn btn-success btn-block">Save</button>
+                    <button asp-page-handler="CancelEmployee" class="btn btn-success btn-block">Cancel</button>
+                </div>
+            </form>
+        }
+        else
+        {
+            <form asp-page-handler="UpdateEmployee" method="post" name="updateEmployeeForm" id="update_employee_form">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input asp-for="Name" type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="form-group">
+                    <label>Id:</label>
+                    <input asp-for="Id" type="number" class="form-control" id="id" name="id" readonly>
+                </div>
+                <div class="form-control-plaintext">
+                    <button type="submit" class="btn btn-success btn-block">Save</button>
+                    <button asp-page-handler="CancelEmployee" class="btn btn-success btn-block">Cancel</button>
+                </div>
+            </form>
+        }
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@page
+@model UserDataAccounting.Web.Pages.DepartmentDetailModel
+@{
+    ViewData["Title"] = "DepartmentDetail";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-page="/DepartmentList">Department</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">@Model.Name</li> 
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        @if (Model.Id == 0)
+        {
+            <form asp-page-handler="AddDepartment" method="post" name="addDepartmentForm" id="add_department_form">
+                <div class="form-group">
+                <label>Name:</label>
+                <input asp-for="Name" type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-control-plaintext">
+                <button type="submit" class="btn btn-success btn-block">Save</button>
+                <button asp-page-handler="CancelDepartment" class="btn btn-success btn-block">Cancel</button>
+            </div>
+        </form>
+        }
+        else {
+        <form asp-page-handler="UpdateDepartment" method="post" name="updateDepartmentForm" id="update_department_form">
+            <div class="form-group">
+                <label>Name:</label>
+                <input asp-for="Name" type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label>Id:</label>
+                <input asp-for="Id" type="number" class="form-control" id="id" name="id" readonly>
+            </div>
+            <div class="form-control-plaintext">
+                <button type="submit" class="btn btn-success btn-block">Save</button>
+                <button asp-page-handler="CancelDepartment" class="btn btn-success btn-block">Cancel</button>
+            </div>
+        </form>
+        }
+    </div>
+</div>

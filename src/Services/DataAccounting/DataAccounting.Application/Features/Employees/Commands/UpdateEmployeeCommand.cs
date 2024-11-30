@@ -1,12 +1,13 @@
 ﻿using BuildingBlocks.CQRS;
 using DataAccounting.Application.Contracts;
 using DataAccounting.Application.Exceptions;
+using DataAccounting.Domain.Models;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Employees.Commands;
 
-public class UpdateEmployeeCommand : ICommand<int>
+public class UpdateEmployeeCommand : ICommand<Employee>
 {
     public int Id { get; set; }
 
@@ -50,9 +51,9 @@ public class UpdateEmployeeCommandValidator : AbstractValidator<UpdateEmployeeCo
 public class UpdateEmployeeCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<UpdateEmployeeCommandHandler> logger)
-    : ICommandHandler<UpdateEmployeeCommand, int>
+    : ICommandHandler<UpdateEmployeeCommand, Employee>
 {
-    public async Task<int> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Employee> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = await dbContext.Employees
                     .FindAsync([request.Id], cancellationToken: cancellationToken);
@@ -73,6 +74,6 @@ public class UpdateEmployeeCommandHandler(
 
         logger.LogInformation("{message} {employeeId}", $"Employee {employee.Id} is successfully updated.", employee.Id);
 
-        return employee.Id;
+        return employee;
     }
 }

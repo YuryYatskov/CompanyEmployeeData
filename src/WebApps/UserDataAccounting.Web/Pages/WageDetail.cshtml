@@ -1,0 +1,85 @@
+﻿@page
+@model UserDataAccounting.Web.Pages.WageDetailModel
+@{
+    ViewData["Title"] = "WageDetail";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="Index">Home</a></li>
+                    <li class="breadcrumb-item"><a asp-page="/WageList">Wage</a></li>
+                @*     <li class="breadcrumb-item active" aria-current="page">@Model.Name</li> *@
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        @if (Model.DepartmentId == 0)
+        {
+            <form asp-page-handler="AddWage" method="post" name="addWageForm" id="add_wage_form">
+                <div class="form-group">
+                    <label>Department Id:</label>
+                    <input asp-for="DepartmentId" type="text" class="form-control" id="departmentId" name="departmentId">
+                </div>
+                <div class="form-group">
+                    <label>Job Id:</label>
+                    <input asp-for="JobId" type="text" class="form-control" id="jobId" name="jobId">
+                </div>
+                <div class="form-group">
+                    <label>Employee Id:</label>
+                    <input asp-for="EmployeeId" type="text" class="form-control" id="employeeId" name="employeeId">
+                </div>
+                <div class="form-group">
+                    <label>Date of work:</label>
+                    <input asp-for="DateOfWork" type="text" class="form-control" id="dateOfWork" name="dateOfWork">
+                </div>
+                <div class="form-group">
+                    <label>Salary:</label>
+                    <input asp-for="Salary" type="text" class="form-control" id="salary" name="salary">
+                </div>
+
+                <div class="form-control-plaintext">
+                    <button type="submit" class="btn btn-success btn-block">Save</button>
+                    <button asp-page-handler="CancelWage" class="btn btn-success btn-block">Cancel</button>
+                </div>
+            </form>
+        }
+        else
+        {
+            <form asp-page-handler="UpdateWage" method="post" name="updateWageForm" id="update_wage_form">
+                <div class="form-group">
+                    <label>Department Id:</label>
+                    <input asp-for="DepartmentId" type="text" class="form-control" id="departmentId" name="departmentId">
+                </div>
+                <div class="form-group">
+                    <label>Job Id:</label>
+                    <input asp-for="JobId" type="text" class="form-control" id="jobId" name="jobId">
+                </div>
+                <div class="form-group">
+                    <label>Employee Id:</label>
+                    <input asp-for="EmployeeId" type="text" class="form-control" id="employeeId" name="employeeId">
+                </div>
+                <div class="form-group">
+                    <label>Date of work:</label>
+                    <input asp-for="DateOfWork" type="text" class="form-control" id="dateOfWork" name="dateOfWork">
+                </div>
+                <div class="form-group">
+                    <label>Salary:</label>
+                    <input asp-for="Salary" type="text" class="form-control" id="salary" name="salary">
+                </div>
+
+                <div class="form-control-plaintext">
+                    <button type="submit" class="btn btn-success btn-block">Save</button>
+                    <button asp-page-handler="CancelWage" class="btn btn-success btn-block">Cancel</button>
+                </div>
+            </form>
+        }
+    </div>
+</div>

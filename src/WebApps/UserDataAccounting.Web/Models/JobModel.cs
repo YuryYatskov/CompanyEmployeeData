@@ -19,4 +19,4 @@ public record UpdateJobRequest(int Id, string Name);
 
 public record UpdateJobResponse(int Id);
 
-public record DeleteJobRequest(int Id);
+public record DeleteJobResponse(int Id);

@@ -28,6 +28,7 @@
                     <th scope="col">Employee Id</th>
                     <th scope="col">Date of work</th>
                     <th scope="col">Salary</th>
+                    <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,9 +41,19 @@
                         <td>@wage.EmployeeId</td>
                         <td>@wage.DateOfWork</td>
                         <td>@wage.Salary</td>
+                        <td class="text-center">
+                            <form method="post">
+                                <a asp-page="WageDetail" asp-route-departmentid="@wage.DepartmentId" asp-route-jobid="@wage.JobId" asp-route-employeeid="@wage.EmployeeId" asp-route-dateofwork="@wage.DateOfWork" class="btn btn-sm btn-warning">Edit</a>
+                                <button type="submit" asp-page-handler="DeleteWage" asp-route-departmentid="@wage.DepartmentId" asp-route-jobid="@wage.JobId" asp-route-employeeid="@wage.EmployeeId" asp-route-dateofwork="@wage.DateOfWork" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <div class="text-center">
+            <a asp-page="WageDetail" class="btn btn-lg btn-block btn-success">Create wage</a>
+        </div>
     </div>
 </div>

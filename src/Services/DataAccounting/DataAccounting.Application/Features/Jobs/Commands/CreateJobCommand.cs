@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Jobs.Commands;
 
-public class CreateJobCommand : ICommand<int>
+public class CreateJobCommand : ICommand<Job>
 {
     public string Name { get; set; } = string.Empty;
 }
@@ -26,9 +26,9 @@ public class CreateJobCommandValidator : AbstractValidator<CreateJobCommand>
 public class CreateJobCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<CreateJobCommandHandler> logger)
-    : ICommandHandler<CreateJobCommand, int>
+    : ICommandHandler<CreateJobCommand, Job>
 {
-    public async Task<int> Handle(CreateJobCommand request, CancellationToken cancellationToken)
+    public async Task<Job> Handle(CreateJobCommand request, CancellationToken cancellationToken)
     {
         var job = Job.Create(request.Name);
         dbContext.Jobs.Add(job);
@@ -36,6 +36,6 @@ public class CreateJobCommandHandler(
 
         logger.LogInformation("{message} {jobId}", $"Job {job.Id} is successfully created.", job.Id);
 
-        return job.Id;
+        return job;
     }
 }

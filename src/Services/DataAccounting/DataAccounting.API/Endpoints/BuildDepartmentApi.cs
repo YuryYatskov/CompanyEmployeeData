@@ -8,6 +8,8 @@ namespace DataAccounting.API.Endpoints;
 
 public static class BuildDepartmentApi
 {
+    public record DepartmentIdResponse(int Id);
+
     public static IEndpointRouteBuilder DepartmentApi(this IEndpointRouteBuilder builder)
     {
         const string RouteName = "api/1.0/department";
@@ -41,7 +43,7 @@ public static class BuildDepartmentApi
                     IMediator mediator) =>
             {
                 var department = await mediator.Send(command);
-                return Results.Created($"{RouteName}/{department}", department); 
+                return Results.Created($"{RouteName}/{department.Id}", new DepartmentIdResponse(department.Id));
             })
         .WithName("CreateDepartment")
         .Produces(StatusCodes.Status201Created)
@@ -54,7 +56,7 @@ public static class BuildDepartmentApi
                 IMediator mediator) =>
             {
                 var department = await mediator.Send(command);
-                return Results.Ok(department);
+                return Results.Ok(new DepartmentIdResponse(department.Id));
             })
         .WithName("UpdateDepartment")
         .Produces(StatusCodes.Status200OK)
@@ -66,7 +68,7 @@ public static class BuildDepartmentApi
         builder.MapDelete(RouteName + "/{id}", async(int id, IMediator mediator) =>
             {
                 var department = await mediator.Send(new DeleteDepartmentCommand(id));
-                return Results.Ok(department);
+                return Results.Ok(new DepartmentIdResponse(department.Id));
             })
         .WithName("DeleteDepartment")
         .Produces(StatusCodes.Status200OK)

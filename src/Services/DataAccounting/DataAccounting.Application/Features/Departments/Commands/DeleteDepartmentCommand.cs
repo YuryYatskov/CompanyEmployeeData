@@ -1,11 +1,12 @@
 ﻿using BuildingBlocks.CQRS;
 using DataAccounting.Application.Contracts;
 using DataAccounting.Application.Exceptions;
+using DataAccounting.Domain.Models;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Departments.Commands;
 
-public class DeleteDepartmentCommand : ICommand<int>
+public class DeleteDepartmentCommand : ICommand<Department>
 {
     public int Id { get; set; }
 
@@ -18,9 +19,9 @@ public class DeleteDepartmentCommand : ICommand<int>
 public class DeleteDepartmentCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<CreateDepartmentCommandHandler> logger)
-    : ICommandHandler<DeleteDepartmentCommand, int>
+    : ICommandHandler<DeleteDepartmentCommand, Department>
 {
-    public async Task<int> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<Department> Handle(DeleteDepartmentCommand request, CancellationToken cancellationToken)
     {
         var department = await dbContext.Departments
             .FindAsync([request.Id], cancellationToken: cancellationToken);
@@ -35,6 +36,6 @@ public class DeleteDepartmentCommandHandler(
         
         logger.LogInformation("{message} {departmentId}", $"Department {department.Id} is successfully deleted.", department.Id);
 
-        return department.Id;
+        return department;
     }
 }

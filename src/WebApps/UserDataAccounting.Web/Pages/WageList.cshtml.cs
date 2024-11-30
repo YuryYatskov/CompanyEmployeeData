@@ -6,7 +6,7 @@ using UserDataAccounting.Web.Services;
 namespace UserDataAccounting.Web.Pages;
 
 public class WageListModel(
-    IWageSevices wageSevices,
+    IWageService wageService,
     ILogger<WageListModel> logger)
         : PageModel
 {
@@ -14,10 +14,19 @@ public class WageListModel(
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var response = await wageSevices.GetWages();
+        var response = await wageService.GetWages();
 
         WageList = response.Wages;
 
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostDeleteWageAsync(int departmentId, int jobId, int employeeId, DateTime dateOfWork)
+    {
+        logger.LogInformation("Delete wage");
+
+        await wageService.DeleteWage(departmentId, jobId, employeeId, dateOfWork);
+
+        return RedirectToPage("WageList");
     }
 }

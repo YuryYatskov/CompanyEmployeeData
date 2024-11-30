@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Employees.Commands;
 
-public class CreateEmployeeCommand : ICommand<int>
+public class CreateEmployeeCommand : ICommand<Employee>
 {
     public string Name { get; set; } = string.Empty;
 
@@ -48,9 +48,9 @@ public class CreateEmployeeCommandValidator : AbstractValidator<CreateEmployeeCo
 public class CreateEmployeeCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<CreateEmployeeCommandHandler> logger)
-    : ICommandHandler<CreateEmployeeCommand, int>
+    : ICommandHandler<CreateEmployeeCommand, Employee>
 {
-    public async Task<int> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Employee> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = Employee.Create(
             request.Name,
@@ -63,6 +63,6 @@ public class CreateEmployeeCommandHandler(
 
         logger.LogInformation("{message} {employeeId}", $"Employee {employee.Id} is successfully created.", employee.Id);
 
-        return employee.Id;
+        return employee;
     }
 }

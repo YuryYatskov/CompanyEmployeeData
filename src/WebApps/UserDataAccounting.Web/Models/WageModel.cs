@@ -15,14 +15,14 @@ public class WageModel
  
 public record GetWagesResponse(IEnumerable<WageModel> Wages);
 
-//public record GetWageByIdResponse(WageModel Wage);
+public record GetWageByIdResponse(WageModel Wage);
 
-//public record CreateWageRequest(string Name);
+public record CreateWageRequest(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork, decimal Salary);
 
-//public record CreateWageResponse(int Id);
+public record CreateWageResponse(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork);
 
-//public record UpdateWageRequest(int Id, string Name);
+public record UpdateWageRequest(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork, decimal Salary);
 
-//public record UpdateWageResponse(int Id);
+public record UpdateWageResponse(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork);
 
-//public record DeleteWageRequest(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork);
+public record DeleteWageResponse(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork);

@@ -20,5 +20,5 @@ public interface IEmployeeService
     Task<UpdateEmployeeResponse> UpdateEmployee(UpdateEmployeeRequest request);
 
     [Delete(RouteName + "/{id}")]
-    Task<DeleteEmployeeRequest> DeleteEmployee(int id);
+    Task<DeleteEmployeeResponse> DeleteEmployee(int id);
 }

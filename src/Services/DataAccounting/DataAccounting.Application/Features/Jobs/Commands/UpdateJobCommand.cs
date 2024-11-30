@@ -1,12 +1,13 @@
 ﻿using BuildingBlocks.CQRS;
 using DataAccounting.Application.Contracts;
 using DataAccounting.Application.Exceptions;
+using DataAccounting.Domain.Models;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Jobs.Commands;
 
-public class UpdateJobCommand : ICommand<int>
+public class UpdateJobCommand : ICommand<Job>
 {
     public int Id { get; set; }
 
@@ -28,9 +29,9 @@ public class UpdateJobCommandValidator : AbstractValidator<UpdateJobCommand>
 public class UpdateJobCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<UpdateJobCommandHandler> logger)
-    : ICommandHandler<UpdateJobCommand, int>
+    : ICommandHandler<UpdateJobCommand, Job>
 {
-    public async Task<int> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
+    public async Task<Job> Handle(UpdateJobCommand request, CancellationToken cancellationToken)
     {
         var job = await dbContext.Jobs
             .FindAsync([request.Id], cancellationToken: cancellationToken);
@@ -47,6 +48,6 @@ public class UpdateJobCommandHandler(
 
         logger.LogInformation("{message} {jobId}", $"Job {job.Id} is successfully updated.", job.Id);
 
-        return job.Id;
+        return job;
     }
 }

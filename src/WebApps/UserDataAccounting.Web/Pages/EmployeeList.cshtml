@@ -28,6 +28,7 @@
                     <th scope="col">Pnone</th>
                     <th scope="col">Date of birth</th>
                     <th scope="col">Address</th>
+                    <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,9 +41,19 @@
                         <td>@employee.Phone</td>
                         <td>@employee.DateOfBirth</td>
                         <td>@employee.Address</td>
+                        <td class="text-center">
+                            <form method="post">
+                                <a asp-page="EmployeeDetail" asp-route-id="@employee.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <button type="submit" asp-page-handler="DeleteEmployee" asp-route-id="@employee.Id" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <div class="text-center">
+            <a asp-page="EmployeeDetail" class="btn btn-lg btn-block btn-success">Create employee</a>
+        </div>
     </div>
 </div>

@@ -24,6 +24,7 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Id</th>
+                    <th scope="col" class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,9 +34,19 @@
                     <tr>
                         <td>@job.Name</td>
                         <td>@job.Id</td>
+                        <td class="text-center">
+                            <form method="post">
+                                <a asp-page="JobDetail" asp-route-id="@job.Id" class="btn btn-sm btn-warning">Edit</a>
+                                <button type="submit" asp-page-handler="DeleteJob" asp-route-id="@job.Id" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             </tbody>
         </table>
+
+        <div class="text-center">
+            <a asp-page="JobDetail" class="btn btn-lg btn-block btn-success">Create job</a>
+        </div>
     </div>
 </div>

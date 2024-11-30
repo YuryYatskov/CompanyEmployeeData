@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Departments.Commands;
 
-public class CreateDepartmentCommand : ICommand<int>
+public class CreateDepartmentCommand : ICommand<Department>
 {
     public string Name { get; set; } = string.Empty;
 }
@@ -26,9 +26,9 @@ public class CreateDepartmentCommandValidator : AbstractValidator<CreateDepartme
 public class CreateDepartmentCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<CreateDepartmentCommandHandler> logger)
-    : ICommandHandler<CreateDepartmentCommand, int>
+    : ICommandHandler<CreateDepartmentCommand, Department>
 {
-    public async Task<int> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<Department> Handle(CreateDepartmentCommand request, CancellationToken cancellationToken)
     {
         var department = Department.Create(request.Name);
         dbContext.Departments.Add(department);
@@ -36,6 +36,6 @@ public class CreateDepartmentCommandHandler(
 
         logger.LogInformation("{message} {departmentId}", $"Department {department.Id} is successfully created.", department.Id);
 
-        return department.Id;
+        return department;
     }
 }

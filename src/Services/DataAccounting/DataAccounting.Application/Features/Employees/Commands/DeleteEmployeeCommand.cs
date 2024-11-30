@@ -1,11 +1,12 @@
 ﻿using BuildingBlocks.CQRS;
 using DataAccounting.Application.Contracts;
 using DataAccounting.Application.Exceptions;
+using DataAccounting.Domain.Models;
 using Microsoft.Extensions.Logging;
 
 namespace DataAccounting.Application.Features.Employees.Commands;
 
-public class DeleteEmployeeCommand : ICommand<int>
+public class DeleteEmployeeCommand : ICommand<Employee>
 {
     public int Id { get; set; }
 
@@ -18,9 +19,9 @@ public class DeleteEmployeeCommand : ICommand<int>
 public class DeleteEmployeeCommandHandler(
     IApplicationDbContext dbContext,
     ILogger<DeleteEmployeeCommandHandler> logger)
-    : ICommandHandler<DeleteEmployeeCommand, int>
+    : ICommandHandler<DeleteEmployeeCommand, Employee>
 {
-    public async Task<int> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Employee> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
     {
         var employee = await dbContext.Employees
             .FindAsync([request.Id], cancellationToken: cancellationToken);
@@ -35,6 +36,6 @@ public class DeleteEmployeeCommandHandler(
 
         logger.LogInformation("{message} {employeeId}", $"Employee {employee.Id} is successfully deleted.", employee.Id);
 
-        return employee.Id;
+        return employee;
     }
 }
