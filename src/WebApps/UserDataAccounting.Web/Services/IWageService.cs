@@ -11,7 +11,7 @@ public interface IWageService
     Task<GetWagesResponse> GetWages();
 
     [Get(RouteName + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}")]
-    Task<GetWageByIdResponse> GetWageById(int departmentId, int jobId, int employeeId, DateTime dateOfWork);
+    Task<GetWageByIdResponse> GetWageById(int departmentId, int jobId, int employeeId, string dateOfWork);
 
     [Post(RouteName)]
     Task<CreateWageResponse> CreateWage(CreateWageRequest request);
@@ -19,6 +19,6 @@ public interface IWageService
     [Put(RouteName)]
     Task<UpdateWageResponse> UpdateWage(UpdateWageRequest request);
 
-    [Delete(RouteName + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}")]
-    Task<DeleteWageResponse> DeleteWage(int departmentId, int jobId, int employeeId, DateTime dateOfWork);
+    [Delete(RouteName + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}") ]
+    Task<DeleteWageResponse> DeleteWage(int departmentId, int jobId, int employeeId, string dateOfWork);
 }

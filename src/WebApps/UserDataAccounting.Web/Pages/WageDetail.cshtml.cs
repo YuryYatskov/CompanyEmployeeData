@@ -29,7 +29,7 @@ public class WageDetailModel(
     {
         if (departmentId != 0)
         {
-            var response = await wageService.GetWageById(departmentId, jobId, employeeId, dateOfWork);
+            var response = await wageService.GetWageById(departmentId, jobId, employeeId, dateOfWork.ToString());
 
             DepartmentId = response!.Wage!.DepartmentId;
             JobId = response!.Wage!.JobId;
@@ -52,7 +52,7 @@ public class WageDetailModel(
 
     public async Task<IActionResult> OnGetUpdateWageAsync(int departmentId, int jobId, int employeeId, DateTime dateOfWork)
     {
-        var response = await wageService.GetWageById(departmentId, jobId, employeeId, dateOfWork);
+        var response = await wageService.GetWageById(departmentId, jobId, employeeId, dateOfWork.ToString());
         DepartmentId = response!.Wage!.DepartmentId;
         JobId = response!.Wage!.JobId;
         EmployeeId = response!.Wage!.EmployeeId;

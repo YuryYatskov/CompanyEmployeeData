@@ -23,9 +23,12 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Department Id</th>
-                    <th scope="col">Job Id</th>
-                    <th scope="col">Employee Id</th>
+                    <th scope="col">Department</th>
+                    @* <th scope="col">Department Id</th> *@
+                    <th scope="col">Job</th>
+                    @* <th scope="col">Job Id</th> *@
+                    <th scope="col">Employee</th>
+                    @* <th scope="col">Employee Id</th> *@
                     <th scope="col">Date of work</th>
                     <th scope="col">Salary</th>
                     <th scope="col" class="text-center">Actions</th>
@@ -36,15 +39,18 @@
                 @foreach (var wage in Model.WageList)
                 {
                     <tr>
-                        <td>@wage.DepartmentId</td>
-                        <td>@wage.JobId</td>
-                        <td>@wage.EmployeeId</td>
+                        <td>@wage.DepartmentName</td>
+                        @* <td>@wage.DepartmentId</td> *@
+                        <td>@wage.JobName</td>
+                        @* <td>@wage.JobId</td> *@
+                        <td>@wage.EmployeeName</td>
+                        @* <td>@wage.EmployeeId</td> *@
                         <td>@wage.DateOfWork</td>
                         <td>@wage.Salary</td>
                         <td class="text-center">
                             <form method="post">
-                                <a asp-page="WageDetail" asp-route-departmentid="@wage.DepartmentId" asp-route-jobid="@wage.JobId" asp-route-employeeid="@wage.EmployeeId" asp-route-dateofwork="@wage.DateOfWork" class="btn btn-sm btn-warning">Edit</a>
-                                <button type="submit" asp-page-handler="DeleteWage" asp-route-departmentid="@wage.DepartmentId" asp-route-jobid="@wage.JobId" asp-route-employeeid="@wage.EmployeeId" asp-route-dateofwork="@wage.DateOfWork" class="btn btn-danger btn-sm">Delete</button>
+                                <a asp-page="WageDetail" asp-route-departmentId="@wage.DepartmentId" asp-route-jobId="@wage.JobId" asp-route-employeeId="@wage.EmployeeId" asp-route-dateOfWork="@wage.DateOfWork" class="btn btn-sm btn-warning">Edit</a>
+                                <button type="submit" asp-page-handler="DeleteWage" asp-route-departmentId="@wage.DepartmentId" asp-route-jobId="@wage.JobId" asp-route-employeeId="@wage.EmployeeId" asp-route-dateOfWork="@wage.DateOfWork" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>
                     </tr>

@@ -3,9 +3,7 @@ using BuildingBlocks.Exceptions.Handler;
 using DataAccounting.API.Endpoints;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Http.Json;
 using System.Reflection;
-using System.Text.Json;
 
 namespace DataAccounting.API;
 
@@ -20,13 +18,6 @@ public static class DependencyInjection
         services.AddHealthChecks()
             .AddSqlServer(configuration.GetConnectionString("Database")!);
 
-        services.Configure<JsonOptions>(options =>
-        {
-            options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            options.SerializerOptions.PropertyNameCaseInsensitive = false;
-            options.SerializerOptions.WriteIndented = true;
-            //options.SerializerOptions.Converters.Add(new JsonDateTimeConverter())
-        });
         return services;
     }
 

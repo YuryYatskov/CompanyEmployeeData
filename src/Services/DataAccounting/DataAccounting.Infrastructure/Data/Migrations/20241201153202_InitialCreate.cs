@@ -115,6 +115,11 @@ namespace DataAccounting.Infrastructure.Data.Migrations
                 column: "Name");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Employees_Phone",
+                table: "Employees",
+                column: "Phone");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Jobs_Name",
                 table: "Jobs",
                 column: "Name");

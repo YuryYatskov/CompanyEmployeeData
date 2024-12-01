@@ -28,6 +28,19 @@
                     <label>Name:</label>
                     <input asp-for="Name" type="text" class="form-control" id="name" name="name">
                 </div>
+                <div class="form-group">
+                    <label>Phone:</label>
+                    <input asp-for="Phone" type="text" class="form-control" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label>Date of birth:</label>
+                    <input asp-for="DateOfBirth" type="text" class="form-control" id="dateOfBirth" name="dateOfBirth">
+                </div>
+                <div class="form-group">
+                    <label>Address:</label>
+                    <input asp-for="Address" type="text" class="form-control" id="address" name="address">
+                </div>
+
                 <div class="form-control-plaintext">
                     <button type="submit" class="btn btn-success btn-block">Save</button>
                     <button asp-page-handler="CancelEmployee" class="btn btn-success btn-block">Cancel</button>
@@ -42,9 +55,22 @@
                     <input asp-for="Name" type="text" class="form-control" id="name" name="name">
                 </div>
                 <div class="form-group">
+                    <label>Phone:</label>
+                    <input asp-for="Phone" type="text" class="form-control" id="phone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label>Date of birth:</label>
+                    <input asp-for="DateOfBirth" type="text" class="form-control" id="dateOfBirth" name="dateOfBirth">
+                </div>
+                <div class="form-group">
+                    <label>Address:</label>
+                    <input asp-for="Address" type="text" class="form-control" id="address" name="address">
+                </div>
+                <div class="form-group">
                     <label>Id:</label>
                     <input asp-for="Id" type="number" class="form-control" id="id" name="id" readonly>
                 </div>
+
                 <div class="form-control-plaintext">
                     <button type="submit" class="btn btn-success btn-block">Save</button>
                     <button asp-page-handler="CancelEmployee" class="btn btn-success btn-block">Cancel</button>

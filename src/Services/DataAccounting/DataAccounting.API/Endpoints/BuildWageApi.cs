@@ -89,10 +89,10 @@ public static class BuildWageApi
             int employeeId,
             DateTime dateOfWork,
             IMediator mediator) =>
-            {
-                var wage = await mediator.Send(new DeleteWageCommand(departmentId, jobId, employeeId, dateOfWork));
-                return Results.Ok(new WageIdResponse(wage.DepartmentId, wage.JobId, wage.EmployeeId, wage.DateOfWork));
-            })
+        {
+            var wage = await mediator.Send(new DeleteWageCommand(departmentId, jobId, employeeId, dateOfWork));
+            return Results.Ok(new WageIdResponse(wage.DepartmentId, wage.JobId, wage.EmployeeId, wage.DateOfWork));
+        })
         .WithName("DeleteWage")
         .Produces(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status404NotFound)

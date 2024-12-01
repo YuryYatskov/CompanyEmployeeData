@@ -97,6 +97,8 @@ namespace DataAccounting.Infrastructure.Data.Migrations
 
                     b.HasIndex("Name");
 
+                    b.HasIndex("Phone");
+
                     b.ToTable("Employees");
                 });
 

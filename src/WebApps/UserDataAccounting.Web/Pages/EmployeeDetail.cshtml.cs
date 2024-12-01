@@ -16,6 +16,15 @@ public class EmployeeDetailModel(
     [BindProperty]
     public string Name { get; set; } = default!;
 
+    [BindProperty]
+    public string Phone { get; set; } = default!;
+
+    [BindProperty]
+    public DateTime DateOfBirth { get; set; }
+
+    [BindProperty]
+    public string Address { get; set; } = default!;
+
     public async Task<IActionResult> OnGetAsync(int id)
     {
         if (id != 0)
@@ -23,6 +32,9 @@ public class EmployeeDetailModel(
             var response = await employeeService.GetEmployeeById(id);
 
             Name = response!.Employee!.Name;
+            Phone = response!.Employee!.Phone;
+            DateOfBirth = response!.Employee!.DateOfBirth;
+            Address = response!.Employee!.Address;
             Id = response!.Employee!.Id;
         }
 
@@ -33,7 +45,7 @@ public class EmployeeDetailModel(
     {
         logger.LogInformation("Add employee");
 
-        await employeeService.CreateEmployee(new CreateEmployeeRequest(Name));
+        await employeeService.CreateEmployee(new CreateEmployeeRequest(Name, Phone, DateOfBirth, Address));
 
         return RedirectToPage("EmployeeList");
     }
@@ -51,7 +63,7 @@ public class EmployeeDetailModel(
     {
         logger.LogInformation("Updete employee");
 
-        await employeeService.UpdateEmployee(new UpdateEmployeeRequest(Id, Name));
+        await employeeService.UpdateEmployee(new UpdateEmployeeRequest(Id, Name, Phone, DateOfBirth, Address));
 
         return RedirectToPage("EmployeeList");
     }

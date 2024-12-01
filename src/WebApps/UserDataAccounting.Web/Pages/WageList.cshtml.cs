@@ -25,7 +25,7 @@ public class WageListModel(
     {
         logger.LogInformation("Delete wage");
 
-        await wageService.DeleteWage(departmentId, jobId, employeeId, dateOfWork);
+        var response = await wageService.DeleteWage(departmentId, jobId, employeeId, dateOfWork.ToString());
 
         return RedirectToPage("WageList");
     }

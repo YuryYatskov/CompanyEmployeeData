@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Http.Json;
 using Refit;
-using System.Text.Json;
 using UserDataAccounting.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,15 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 
-builder.Services.Configure<JsonOptions>(options =>
-{
-    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    options.SerializerOptions.PropertyNameCaseInsensitive = false;
-    options.SerializerOptions.WriteIndented = true;
-    //options.SerializerOptions.Converters.Add(new JsonDateTimeConverter())
-});
-
-builder.Services.AddRefitClient<IDepartmentService>()
+     builder.Services.AddRefitClient<IDepartmentService>()
     .ConfigureHttpClient(c =>
     {
         c.BaseAddress = new Uri(builder.Configuration["ApiSettings:DataAccountingAddress"]!);

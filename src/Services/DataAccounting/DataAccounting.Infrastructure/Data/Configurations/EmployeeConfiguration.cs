@@ -22,5 +22,7 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         builder.Property(c => c.DateOfBirth);
 
         builder.HasIndex(e => e.Name);
+
+        builder.HasIndex(e => e.Phone);
     }
 }

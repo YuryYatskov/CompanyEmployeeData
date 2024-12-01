@@ -17,11 +17,11 @@ public record GetEmployeesResponse(IEnumerable<EmployeeModel> Employees);
 
 public record GetEmployeeByIdResponse(EmployeeModel Employee);
 
-public record CreateEmployeeRequest(string Name);
+public record CreateEmployeeRequest(string Name, string Phone, DateTime DateOfBirth, string Address);
 
 public record CreateEmployeeResponse(int Id);
 
-public record UpdateEmployeeRequest(int Id, string Name);
+public record UpdateEmployeeRequest(int Id, string Name, string Phone, DateTime DateOfBirth, string Address);
 
 public record UpdateEmployeeResponse(int Id);
 

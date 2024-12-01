@@ -4,9 +4,21 @@ public class WageModel
 {
     public int DepartmentId { get; set; }
 
+    public string DepartmentName { get; set; } = default!;
+
     public int JobId { get; set; }
 
+    public string JobName { get; set; } = default!;
+
     public int EmployeeId { get; set; }
+
+    public string EmployeeName { get; set; } = default!;
+
+    public string Phone { get; set; } = default!;
+
+    public DateTime DateOfBirth { get; set; }
+
+    string Address { get; set; } = default!;
 
     public DateTime DateOfWork { get; set; }
 
@@ -25,4 +37,8 @@ public record UpdateWageRequest(int DepartmentId, int JobId, int EmployeeId, Dat
 
 public record UpdateWageResponse(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork);
 
+public record DeleteWageRequest(int DepartmentId, int JobId, int EmployeeId, string DateOfWork);
+
 public record DeleteWageResponse(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork);
+
+//public record DeleteWageRequest2(int DepartmentId);
