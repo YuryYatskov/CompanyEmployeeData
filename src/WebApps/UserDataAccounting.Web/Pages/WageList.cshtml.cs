@@ -29,4 +29,20 @@ public class WageListModel(
 
         return RedirectToPage("WageList");
     }
+
+    public async Task<IActionResult> OnPostPrintWageAsync(int departmentId, int jobId, int employeeId, DateTime dateOfWork)
+    {
+        var response = await wageService.GetWages();
+        var wageList = response.Wages;
+        string printWage = string.Join("\r\n", wageList.Select(x => $"{x.DepartmentId};{x.DepartmentName};{x.JobId};{x.JobName};{x.EmployeeId};{x.EmployeeName};{x.DateOfWork};{x.Salary}"));
+
+        string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+        using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "PrintWage.txt")))
+        {
+            outputFile.WriteLine(printWage);
+        }
+
+        return RedirectToPage();
+    }
 }

@@ -58,8 +58,11 @@
             </tbody>
         </table>
 
-        <div class="text-center">
-            <a asp-page="WageDetail" class="btn btn-lg btn-block btn-success">Create wage</a>
+        <div class="text-center form-control-plaintext">
+            <form method="post">
+                <a asp-page="WageDetail" class="btn btn-lg btn-block btn-success">Create wage</a>
+                <button asp-page-handler="PrintWage" class="btn btn-lg btn-success btn-block">Print</button>
+            </form>
         </div>
     </div>
 </div>
