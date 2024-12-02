@@ -5,9 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddProblemDetails(options =>
+    options.CustomizeProblemDetails = ctx =>
+            ctx.ProblemDetails.Extensions.Add("nodeId", Environment.MachineName));
 
-
-     builder.Services.AddRefitClient<IDepartmentService>()
+builder.Services.AddRefitClient<IDepartmentService>()
     .ConfigureHttpClient(c =>
     {
         c.BaseAddress = new Uri(builder.Configuration["ApiSettings:DataAccountingAddress"]!);

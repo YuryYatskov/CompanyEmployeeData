@@ -15,6 +15,8 @@ public class WageListModel(
 
     public IEnumerable<WageModel> WageList { get; set; } = [];
 
+    public IEnumerable<MediumWageModel> MediumWageList { get; set; } = [];
+
     public async Task<IActionResult> OnGetAsync()
     {
         var response = await wageService.GetWages();
@@ -73,6 +75,23 @@ public class WageListModel(
 
         var response = await wageService.GetWagesOnlyTheLatest();
         WageList = response.Wages;
+
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostMediumWageAsync(string DepartmentName)
+    {
+        SearchString = null;
+
+        var response = await wageService.GetWagesMedium();
+        MediumWageList = response.Wages;
+            //.Select(x => new WageModel
+            //{
+            //    DepartmentId = x.DepartmentId,
+            //    DepartmentName = x.DepartmentName,
+            //    Salary = x.MediumWages
+            //})
+            //.ToList();
 
         return Page();
     }

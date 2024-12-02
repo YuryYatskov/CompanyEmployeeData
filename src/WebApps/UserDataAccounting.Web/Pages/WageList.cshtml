@@ -26,6 +26,7 @@
 
             <button asp-page-handler="AllWage" class="btn btn-sm btn-secondary text-end">All</button>
             <button asp-page-handler="OnlyTheLatesWage" class="btn btn-sm btn-secondary text-end">Only the lates</button>
+            <button asp-page-handler="MediumWage" class="btn btn-sm btn-secondary text-end">Medium department</button>
         </div>
     </form>
     </div>
@@ -76,5 +77,28 @@
                 <button asp-page-handler="PrintWage" class="btn btn-lg btn-success btn-block">Print</button>
             </form>
         </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Department</th>
+                    <th scope="col">Medium salary</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var wage in Model.MediumWageList)
+                {
+                    <tr>
+                        <td>@wage.DepartmentName</td>
+                        <td>@wage.MediumSalary</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

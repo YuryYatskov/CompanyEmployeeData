@@ -16,6 +16,9 @@ public interface IWageService
     [Get($"{RouteName}s/onlyTheLatest")]
     Task<GetWagesResponse> GetWagesOnlyTheLatest();
 
+    [Get($"{RouteName}s/medium")]
+    Task<GetMediumWagesResponse> GetWagesMedium();
+
     [Get($"{RouteName}s/parameters")]
     Task<GetWagesParametersResponse> GetWagesParameters();
 
