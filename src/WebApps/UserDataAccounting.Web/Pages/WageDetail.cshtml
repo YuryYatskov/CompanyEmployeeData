@@ -23,16 +23,17 @@
         {
             <form asp-page-handler="AddWage" method="post" name="addWageForm" id="add_wage_form">
                 <div class="form-group">
-                    <label>Department Id:</label>
-                    <input asp-for="DepartmentId" type="text" class="form-control" id="departmentId" name="departmentId">
+                    <label>Department:</label>
+                    <select asp-items="Model.Departments" asp-for="DepartmentId" class="form-select" id="departmentId" name="departmentId"></select>
                 </div>
                 <div class="form-group">
-                    <label>Job Id:</label>
-                    <input asp-for="JobId" type="text" class="form-control" id="jobId" name="jobId">
+                    <label>Job:</label>
+
+                    <select asp-items="Model.Jobs" asp-for="JobId" class="form-select" id="jobId" name="jobId"></select>
                 </div>
                 <div class="form-group">
-                    <label>Employee Id:</label>
-                    <input asp-for="EmployeeId" type="text" class="form-control" id="employeeId" name="employeeId">
+                    <label>Employee:</label>
+                    <select asp-items="Model.Employees" asp-for="EmployeeId" class="form-select" id="employeeId" name="employeeId"></select>
                 </div>
                 <div class="form-group">
                     <label>Date of work:</label>

@@ -53,6 +53,19 @@ public static class BuildWageApi
         .WithSummary("Get wages only the latest")
         .WithDescription("Get wages  only the latest");
 
+        builder.MapGet($"{RouteName}s/parameters",
+        async ([AsParameters] GetWagesParametersQuery query,
+                IMediator mediator) =>
+        {
+            var response = await mediator.Send(query);
+            return Results.Ok(response);
+
+        })
+        .WithName("GetWagesParameters")
+        .Produces<GetWagesParametersResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get wages parameters")
+        .WithDescription("Get wages parameters");
+
         builder.MapGet($"{RouteName}" + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}", async (
             int departmentId,
             int jobId,

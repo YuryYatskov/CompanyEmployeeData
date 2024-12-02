@@ -41,4 +41,7 @@ public record DeleteWageRequest(int DepartmentId, int JobId, int EmployeeId, str
 
 public record DeleteWageResponse(int DepartmentId, int JobId, int EmployeeId, DateTime DateOfWork);
 
-//public record DeleteWageRequest2(int DepartmentId);
+public record GetWagesParametersResponse(
+    List<DepartmentModel> Departments,
+    List<JobModel> Jobs,
+    List<EmployeeModel> Employees);

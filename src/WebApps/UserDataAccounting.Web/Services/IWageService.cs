@@ -16,6 +16,9 @@ public interface IWageService
     [Get($"{RouteName}s/onlyTheLatest")]
     Task<GetWagesResponse> GetWagesOnlyTheLatest();
 
+    [Get($"{RouteName}s/parameters")]
+    Task<GetWagesParametersResponse> GetWagesParameters();
+
     [Get(RouteName + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}")]
     Task<GetWageByIdResponse> GetWageById(int departmentId, int jobId, int employeeId, string dateOfWork);
 

@@ -37,6 +37,10 @@ public class EmployeeDetailModel(
             Address = response!.Employee!.Address;
             Id = response!.Employee!.Id;
         }
+        else
+        {
+            DateOfBirth = DateTime.Now.Date;
+        }
 
         return Page();
     }
