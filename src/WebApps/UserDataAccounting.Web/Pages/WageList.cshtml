@@ -4,7 +4,6 @@
     ViewData["Title"] = "Wage";
 }
 
-
 <div class="container">
     <div class="row">
         <div class="col">
@@ -19,16 +18,22 @@
 </div>
 
 <div class="container">
+    <form method="post">
+        <div class="form-group">
+            <label class="text-sm-start">Search: <input type="text" asp-for="SearchString" /></label>
+            <button asp-page-handler="FilterWage" class="btn btn-sm btn-secondary">Filter</button>
+        </div>
+    </form>
+</div>
+
+<div class="container">
     <div class="row">
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Department</th>
-                    @* <th scope="col">Department Id</th> *@
                     <th scope="col">Job</th>
-                    @* <th scope="col">Job Id</th> *@
                     <th scope="col">Employee</th>
-                    @* <th scope="col">Employee Id</th> *@
                     <th scope="col">Date of work</th>
                     <th scope="col">Salary</th>
                     <th scope="col" class="text-center">Actions</th>
@@ -40,11 +45,8 @@
                 {
                     <tr>
                         <td>@wage.DepartmentName</td>
-                        @* <td>@wage.DepartmentId</td> *@
-                        <td>@wage.JobName</td>
-                        @* <td>@wage.JobId</td> *@
+                        <td>@wage.JobName</td>                      
                         <td>@wage.EmployeeName</td>
-                        @* <td>@wage.EmployeeId</td> *@
                         <td>@wage.DateOfWork</td>
                         <td>@wage.Salary</td>
                         <td class="text-center">

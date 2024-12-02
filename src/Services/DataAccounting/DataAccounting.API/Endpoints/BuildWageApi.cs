@@ -27,6 +27,19 @@ public static class BuildWageApi
         .WithSummary("Get wages")
         .WithDescription("Get wages");
 
+        builder.MapGet($"{RouteName}s" + "/{filter}",
+        async ( string filter,
+                IMediator mediator) =>
+        {
+            var response =  await mediator.Send(new GetWagesQueryFilter(filter));
+            return Results.Ok(response);
+
+        })
+        .WithName("GetWagesFilter")
+        .Produces<GetWagesResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get wages filter")
+        .WithDescription("Get wages filter");
+
         builder.MapGet($"{RouteName}s/onlyTheLatest",
         async ([AsParameters] GetWagesOnlyTheLatestQuery query,
                 IMediator mediator) =>

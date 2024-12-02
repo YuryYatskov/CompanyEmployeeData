@@ -10,6 +10,9 @@ public interface IWageService
     [Get($"{RouteName}s")]
     Task<GetWagesResponse> GetWages();
 
+    [Get($"{RouteName}s" + "/{filter}")]
+    Task<GetWagesResponse> GetWageFilters(string filter);
+
     [Get(RouteName + "/{departmentId}/{jobId}/{employeeId}/{dateOfWork}")]
     Task<GetWageByIdResponse> GetWageById(int departmentId, int jobId, int employeeId, string dateOfWork);
 

@@ -10,6 +10,9 @@ public class WageListModel(
     ILogger<WageListModel> logger)
         : PageModel
 {
+    [BindProperty(SupportsGet = true)]
+    public string? SearchString { get; set; }
+
     public IEnumerable<WageModel> WageList { get; set; } = [];
 
     public async Task<IActionResult> OnGetAsync()
@@ -30,7 +33,7 @@ public class WageListModel(
         return RedirectToPage("WageList");
     }
 
-    public async Task<IActionResult> OnPostPrintWageAsync(int departmentId, int jobId, int employeeId, DateTime dateOfWork)
+    public async Task<IActionResult> OnPostPrintWageAsync()
     {
         var response = await wageService.GetWages();
         var wageList = response.Wages;
@@ -44,5 +47,13 @@ public class WageListModel(
         }
 
         return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostFilterWageAsync(string DepartmentName)
+    {
+        var response = await wageService.GetWageFilters(SearchString);
+        WageList = response.Wages;
+
+        return Page();
     }
 }
