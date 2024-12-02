@@ -56,4 +56,24 @@ public class WageListModel(
 
         return Page();
     }
+
+    public async Task<IActionResult> OnPostAllWageAsync(string DepartmentName)
+    {
+        SearchString = null;
+
+        var response = await wageService.GetWages();
+        WageList = response.Wages;
+
+        return Page();
+    }
+
+    public async Task<IActionResult> OnPostOnlyTheLatesWageAsync(string DepartmentName)
+    {
+        SearchString = null;
+
+        var response = await wageService.GetWagesOnlyTheLatest();
+        WageList = response.Wages;
+
+        return Page();
+    }
 }
