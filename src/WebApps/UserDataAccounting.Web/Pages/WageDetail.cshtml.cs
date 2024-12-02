@@ -14,10 +14,19 @@ public class WageDetailModel(
     public int DepartmentId { get; set; }
 
     [BindProperty]
+    public string DepartmentName { get; set; }
+
+    [BindProperty]
     public int JobId { get; set; }
 
     [BindProperty]
+    public string JobName { get; set; }
+
+    [BindProperty]
     public int EmployeeId { get; set; }
+
+    [BindProperty]
+    public string EmployeeName { get; set; }
 
     [BindProperty]
     public DateTime DateOfWork { get; set; }
@@ -32,8 +41,11 @@ public class WageDetailModel(
             var response = await wageService.GetWageById(departmentId, jobId, employeeId, dateOfWork.ToString());
 
             DepartmentId = response!.Wage!.DepartmentId;
+            DepartmentName = response!.Wage!.DepartmentName;
             JobId = response!.Wage!.JobId;
+            JobName = response!.Wage!.JobName;
             EmployeeId = response!.Wage!.EmployeeId;
+            EmployeeName = response!.Wage!.EmployeeName;
             DateOfWork = response!.Wage!.DateOfWork;
             Salary = response!.Wage!.Salary;
         }
@@ -48,18 +60,6 @@ public class WageDetailModel(
         await wageService.CreateWage(new CreateWageRequest(DepartmentId, JobId, EmployeeId, DateOfWork, Salary));
 
         return RedirectToPage("WageList");
-    }
-
-    public async Task<IActionResult> OnGetUpdateWageAsync(int departmentId, int jobId, int employeeId, DateTime dateOfWork)
-    {
-        var response = await wageService.GetWageById(departmentId, jobId, employeeId, dateOfWork.ToString());
-        DepartmentId = response!.Wage!.DepartmentId;
-        JobId = response!.Wage!.JobId;
-        EmployeeId = response!.Wage!.EmployeeId;
-        DateOfWork = response!.Wage!.DateOfWork;
-        Salary = response!.Wage!.Salary;
-
-        return Page();
     }
 
     public async Task<IActionResult> OnPostUpdateWageAsync()

@@ -1,4 +1,4 @@
-# CompanyEmployeeData
+# Company employee data
 User data accounting.
 
 Replace this with appsettings.json

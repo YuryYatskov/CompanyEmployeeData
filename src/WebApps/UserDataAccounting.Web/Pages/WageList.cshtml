@@ -25,7 +25,7 @@
             <button asp-page-handler="FilterWage" class="btn btn-sm btn-secondary">Filter</button>
 
             <button asp-page-handler="AllWage" class="btn btn-sm btn-secondary text-end">All</button>
-                <button asp-page-handler="OnlyTheLatesWage" class="btn btn-sm btn-secondary text-end">Only the lates</button>
+            <button asp-page-handler="OnlyTheLatesWage" class="btn btn-sm btn-secondary text-end">Only the lates</button>
         </div>
     </form>
     </div>
@@ -56,7 +56,12 @@
                         <td>@wage.Salary</td>
                         <td class="text-center">
                             <form method="post">
-                                <a asp-page="WageDetail" asp-route-departmentId="@wage.DepartmentId" asp-route-jobId="@wage.JobId" asp-route-employeeId="@wage.EmployeeId" asp-route-dateOfWork="@wage.DateOfWork" class="btn btn-sm btn-warning">Edit</a>
+                                <a asp-page="WageDetail"
+                                    asp-route-departmentId="@wage.DepartmentId"
+                                    asp-route-jobId="@wage.JobId"
+                                    asp-route-employeeId="@wage.EmployeeId"
+                                    asp-route-dateOfWork="@wage.DateOfWork"
+                                    class="btn btn-sm btn-warning">Edit</a>
                                 <button type="submit" asp-page-handler="DeleteWage" asp-route-departmentId="@wage.DepartmentId" asp-route-jobId="@wage.JobId" asp-route-employeeId="@wage.EmployeeId" asp-route-dateOfWork="@wage.DateOfWork" class="btn btn-danger btn-sm">Delete</button>
                             </form>
                         </td>

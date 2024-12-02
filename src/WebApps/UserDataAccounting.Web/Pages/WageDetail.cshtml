@@ -11,13 +11,11 @@
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a asp-page="Index">Home</a></li>
                     <li class="breadcrumb-item"><a asp-page="/WageList">Wage</a></li>
-                @*     <li class="breadcrumb-item active" aria-current="page">@Model.Name</li> *@
                 </ol>
             </nav>
         </div>
     </div>
 </div>
-
 
 <div class="container">
     <div class="row">
@@ -55,16 +53,19 @@
         {
             <form asp-page-handler="UpdateWage" method="post" name="updateWageForm" id="update_wage_form">
                 <div class="form-group">
-                    <label>Department Id:</label>
-                    <input asp-for="DepartmentId" type="text" class="form-control" id="departmentId" name="departmentId" readonly>
+                    <label>Department:</label>
+                    <input asp-for="DepartmentName" type="text" class="form-control" id="departmentName" name="departmentName" readonly>
+                    <input asp-for="DepartmentId" type="text" class="form-control" id="departmentId" name="departmentId" readonly hidden>
                 </div>
                 <div class="form-group">
-                    <label>Job Id:</label>
-                    <input asp-for="JobId" type="text" class="form-control" id="jobId" name="jobId" readonly>
+                    <label>Job:</label>
+                    <input asp-for="JobName" type="text" class="form-control" id="jobName" name="jobName" readonly>
+                    <input asp-for="JobId" type="text" class="form-control" id="jobId" name="jobId" readonly hidden>
                 </div>
                 <div class="form-group">
-                    <label>Employee Id:</label>
-                    <input asp-for="EmployeeId" type="text" class="form-control" id="employeeId" name="employeeId" readonly>
+                    <label>Employee:</label>
+                    <input asp-for="EmployeeName" type="text" class="form-control" id="employeeName" name="employeeName" readonly>
+                    <input asp-for="EmployeeId" type="text" class="form-control" id="employeeId" name="employeeId" readonly hidden>
                 </div>
                 <div class="form-group">
                     <label>Date of work:</label>
