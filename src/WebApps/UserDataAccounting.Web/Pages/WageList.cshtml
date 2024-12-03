@@ -17,6 +17,7 @@
     </div>
 </div>
 
+
 <div class="container">
     <div class="row">
     <form method="post">
@@ -33,72 +34,77 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Department</th>
-                    <th scope="col">Job</th>
-                    <th scope="col">Employee</th>
-                    <th scope="col">Date of work</th>
-                    <th scope="col">Salary</th>
-                    <th scope="col" class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var wage in Model.WageList)
-                {
+@if (Model.IndexData == 0)
+{
+    <div class="container">
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>@wage.DepartmentName</td>
-                        <td>@wage.JobName</td>                      
-                        <td>@wage.EmployeeName</td>
-                        <td>@wage.DateOfWork</td>
-                        <td>@wage.Salary</td>
-                        <td class="text-center">
-                            <form method="post">
-                                <a asp-page="WageDetail"
-                                    asp-route-departmentId="@wage.DepartmentId"
-                                    asp-route-jobId="@wage.JobId"
-                                    asp-route-employeeId="@wage.EmployeeId"
-                                    asp-route-dateOfWork="@wage.DateOfWork"
-                                    class="btn btn-sm btn-warning">Edit</a>
-                                <button type="submit" asp-page-handler="DeleteWage" asp-route-departmentId="@wage.DepartmentId" asp-route-jobId="@wage.JobId" asp-route-employeeId="@wage.EmployeeId" asp-route-dateOfWork="@wage.DateOfWork" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </td>
+                        <th scope="col">Department</th>
+                        <th scope="col">Job</th>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Date of work</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col" class="text-center">Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
 
-        <div class="text-center form-control-plaintext">
-            <form method="post">
-                <a asp-page="WageDetail" class="btn btn-lg btn-block btn-success">Create wage</a>
-            </form>
+                    @foreach (var wage in Model.WageList)
+                    {
+                        <tr>
+                            <td>@wage.DepartmentName</td>
+                            <td>@wage.JobName</td>                      
+                            <td>@wage.EmployeeName</td>
+                            <td>@wage.DateOfWork</td>
+                            <td>@wage.Salary</td>
+                            <td class="text-center">
+                                <form method="post">
+                                    <a asp-page="WageDetail"
+                                        asp-route-departmentId="@wage.DepartmentId"
+                                        asp-route-jobId="@wage.JobId"
+                                        asp-route-employeeId="@wage.EmployeeId"
+                                        asp-route-dateOfWork="@wage.DateOfWork"
+                                        class="btn btn-sm btn-warning">Edit</a>
+                                    <button type="submit" asp-page-handler="DeleteWage" asp-route-departmentId="@wage.DepartmentId" asp-route-jobId="@wage.JobId" asp-route-employeeId="@wage.EmployeeId" asp-route-dateOfWork="@wage.DateOfWork" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="text-center form-control-plaintext">
+                <form method="post">
+                    <a asp-page="WageDetail" class="btn btn-lg btn-block btn-success">Create wage</a>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col">Department</th>
-                    <th scope="col">Medium salary</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var wage in Model.MediumWageList)
-                {
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>@wage.DepartmentName</td>
-                        <td>@wage.MediumSalary</td>
+                        <th scope="col">Department</th>
+                        <th scope="col">Medium salary</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+
+                    @foreach (var wage in Model.MediumWageList)
+                    {
+                        <tr>
+                            <td>@wage.DepartmentName</td>
+                            <td>@wage.MediumSalary</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 </div>
+}

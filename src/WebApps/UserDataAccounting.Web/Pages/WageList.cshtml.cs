@@ -13,6 +13,9 @@ public class WageListModel(
     [BindProperty(SupportsGet = true)]
     public string? SearchString { get; set; }
 
+    [BindProperty]
+    public int IndexData { get; set; }
+
     public IEnumerable<WageModel> WageList { get; set; } = [];
 
     public IEnumerable<MediumWageModel> MediumWageList { get; set; } = [];
@@ -37,6 +40,7 @@ public class WageListModel(
 
     public async Task<IActionResult> OnPostPrintWageAsync()
     {
+        IndexData = 0;
         var response = await wageService.GetWageFilters(SearchString);
         WageList = response.Wages;
         string printWage = string.Join("\r\n", WageList.Select(x => $"{x.DepartmentId};{x.DepartmentName};{x.JobId};{x.JobName};{x.EmployeeId};{x.EmployeeName};{x.DateOfWork};{x.Salary}"));
@@ -54,6 +58,7 @@ public class WageListModel(
 
     public async Task<IActionResult> OnPostFilterWageAsync(string DepartmentName)
     {
+        IndexData = 0;
         var response = await wageService.GetWageFilters(SearchString);
         WageList = response.Wages;
 
@@ -62,6 +67,7 @@ public class WageListModel(
 
     public async Task<IActionResult> OnPostAllWageAsync(string DepartmentName)
     {
+        IndexData = 0;
         SearchString = null;
 
         var response = await wageService.GetWages();
@@ -72,6 +78,7 @@ public class WageListModel(
 
     public async Task<IActionResult> OnPostOnlyTheLatesWageAsync(string DepartmentName)
     {
+        IndexData = 0;
         SearchString = null;
 
         var response = await wageService.GetWagesOnlyTheLatest();
@@ -82,6 +89,7 @@ public class WageListModel(
 
     public async Task<IActionResult> OnPostMediumWageAsync(string DepartmentName)
     {
+        IndexData = 1;
         SearchString = null;
 
         var response = await wageService.GetWagesMedium();
