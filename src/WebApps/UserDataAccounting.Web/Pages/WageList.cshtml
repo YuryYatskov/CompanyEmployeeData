@@ -21,12 +21,13 @@
     <div class="row">
     <form method="post">
         <div class="form-group">
-            <label class="text-sm-start">Search: <input type="text" asp-for="SearchString" /></label>
+            <label class="text-sm-start">Search: <input type="text" asp-for="SearchString" id="searchString" name="searchString" /></label>
             <button asp-page-handler="FilterWage" class="btn btn-sm btn-secondary">Filter</button>
 
-            <button asp-page-handler="AllWage" class="btn btn-sm btn-secondary text-end">All</button>
-            <button asp-page-handler="OnlyTheLatesWage" class="btn btn-sm btn-secondary text-end">Only the lates</button>
-            <button asp-page-handler="MediumWage" class="btn btn-sm btn-secondary text-end">Medium department</button>
+            <button asp-page-handler="PrintWage" class="btn btn-sm btn-secondary">Print</button>
+            <button asp-page-handler="AllWage" class="btn btn-sm btn-secondary">All</button>
+            <button asp-page-handler="OnlyTheLatesWage" class="btn btn-sm btn-secondary">Only the lates</button>
+            <button asp-page-handler="MediumWage" class="btn btn-sm btn-secondary">Medium department</button>
         </div>
     </form>
     </div>
@@ -74,7 +75,6 @@
         <div class="text-center form-control-plaintext">
             <form method="post">
                 <a asp-page="WageDetail" class="btn btn-lg btn-block btn-success">Create wage</a>
-                <button asp-page-handler="PrintWage" class="btn btn-lg btn-success btn-block">Print</button>
             </form>
         </div>
     </div>

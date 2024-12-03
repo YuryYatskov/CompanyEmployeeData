@@ -8,7 +8,6 @@ namespace UserDataAccounting.Web.Pages;
 
 public class WageDetailModel(
     IWageService wageService,
-    IDepartmentService departmentService,
     ILogger<WageListModel> logger)
         : PageModel
 {

@@ -37,9 +37,9 @@ public class WageListModel(
 
     public async Task<IActionResult> OnPostPrintWageAsync()
     {
-        var response = await wageService.GetWages();
-        var wageList = response.Wages;
-        string printWage = string.Join("\r\n", wageList.Select(x => $"{x.DepartmentId};{x.DepartmentName};{x.JobId};{x.JobName};{x.EmployeeId};{x.EmployeeName};{x.DateOfWork};{x.Salary}"));
+        var response = await wageService.GetWageFilters(SearchString);
+        WageList = response.Wages;
+        string printWage = string.Join("\r\n", WageList.Select(x => $"{x.DepartmentId};{x.DepartmentName};{x.JobId};{x.JobName};{x.EmployeeId};{x.EmployeeName};{x.DateOfWork};{x.Salary}"));
 
         string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
@@ -47,8 +47,9 @@ public class WageListModel(
         {
             outputFile.WriteLine(printWage);
         }
+        
+        return Page();
 
-        return RedirectToPage();
     }
 
     public async Task<IActionResult> OnPostFilterWageAsync(string DepartmentName)
@@ -85,13 +86,6 @@ public class WageListModel(
 
         var response = await wageService.GetWagesMedium();
         MediumWageList = response.Wages;
-            //.Select(x => new WageModel
-            //{
-            //    DepartmentId = x.DepartmentId,
-            //    DepartmentName = x.DepartmentName,
-            //    Salary = x.MediumWages
-            //})
-            //.ToList();
 
         return Page();
     }
