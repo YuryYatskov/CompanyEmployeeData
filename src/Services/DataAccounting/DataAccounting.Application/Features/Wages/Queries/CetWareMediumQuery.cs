@@ -6,7 +6,7 @@ namespace DataAccounting.Application.Features.Wages.Queries;
 
 public record GetWareMediumQuery : IQuery<GetMediumWagesResponse>;
 
-public record MediumWagesResponse(int DepartmentId, string DepartmentName, decimal MediumSalary);
+public record MediumWagesResponse(int DepartmentId, string DepartmentName, decimal MediumSalary, decimal Salary);
 
 public record GetMediumWagesResponse(List<MediumWagesResponse> Wages);
 
@@ -34,7 +34,7 @@ public class CetWareMediumQueryHandler(IApplicationDbContext dbContext)
             .Select(g => new
             {
                 DepartmentId = g.Key.DepartmentId,
-                //Salary = g.Sum(row => row.Salary),
+                Salary = g.Sum(row => row.Salary),
                 //Numberoflines = g.Sum(row => row.Numberoflines),
                 MediumSalary = g.Sum(row => row.Salary) / g.Sum(row => row.Numberoflines)
             })
@@ -45,7 +45,8 @@ public class CetWareMediumQueryHandler(IApplicationDbContext dbContext)
             (
                 x.DepartmentId,
                 y.Name,
-                x.MediumSalary
+                x.MediumSalary,
+                x.Salary
             ))
             .ToListAsync(cancellationToken);
 

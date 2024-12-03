@@ -28,7 +28,7 @@
             <button asp-page-handler="PrintWage" class="btn btn-sm btn-secondary">Print</button>
             <button asp-page-handler="AllWage" class="btn btn-sm btn-secondary">All</button>
             <button asp-page-handler="OnlyTheLatesWage" class="btn btn-sm btn-secondary">Only the lates</button>
-            <button asp-page-handler="MediumWage" class="btn btn-sm btn-secondary">Medium department</button>
+            <button asp-page-handler="MediumWage" class="btn btn-sm btn-secondary">Salary / Medium department</button>
         </div>
     </form>
     </div>
@@ -92,6 +92,7 @@ else
                     <tr>
                         <th scope="col">Department</th>
                         <th scope="col">Medium salary</th>
+                        <th scope="col">Salary</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -101,6 +102,7 @@ else
                         <tr>
                             <td>@wage.DepartmentName</td>
                             <td>@wage.MediumSalary</td>
+                            <td>@wage.Salary</td>
                         </tr>
                     }
                 </tbody>

@@ -7,6 +7,8 @@ public class MediumWageModel
     public string DepartmentName { get; set; } = default!;
 
     public decimal MediumSalary { get; set; }
+
+    public decimal Salary { get; set; }
 }
 
 public record GetMediumWagesResponse(IEnumerable<MediumWageModel> Wages);
