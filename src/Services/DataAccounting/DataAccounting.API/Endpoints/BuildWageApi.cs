@@ -51,7 +51,7 @@ public static class BuildWageApi
         .WithName("GetWagesOnlyTheLatest")
         .Produces<GetWagesOnlyTheLatestResponse>(StatusCodes.Status200OK)
         .WithSummary("Get wages only the latest")
-        .WithDescription("Get wages  only the latest");
+        .WithDescription("Get wages only the latest");
 
         builder.MapGet($"{RouteName}s/medium",
         async ([AsParameters] GetWareMediumQuery query,
@@ -65,6 +65,19 @@ public static class BuildWageApi
         .Produces<GetMediumWagesResponse>(StatusCodes.Status200OK)
         .WithSummary("Get wages medium")
         .WithDescription("Get wages medium");
+
+        builder.MapGet($"{RouteName}s/employees",
+        async ([AsParameters] GetWareEmployeeQuery query,
+                IMediator mediator) =>
+        {
+            var response = await mediator.Send(query);
+            return Results.Ok(response);
+
+        })
+        .WithName("GetWagesEmployees")
+        .Produces<GetEmployeesWagesResponse>(StatusCodes.Status200OK)
+        .WithSummary("Get wages employees")
+        .WithDescription("Get wages employees");
 
         builder.MapGet($"{RouteName}s/parameters",
         async ([AsParameters] GetWagesParametersQuery query,

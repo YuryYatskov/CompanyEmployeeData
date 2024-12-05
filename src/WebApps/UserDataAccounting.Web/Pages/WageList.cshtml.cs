@@ -97,4 +97,15 @@ public class WageListModel(
 
         return Page();
     }
+
+    public async Task<IActionResult> OnPostEmployeeWageAsync(string DepartmentName)
+    {
+        IndexData = 2;
+        SearchString = null;
+
+        var response = await wageService.GetEmployeesWages();
+        WageList = response.Wages;
+
+        return Page();
+    }
 }

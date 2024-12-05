@@ -18,7 +18,7 @@ public class WageModel
 
     public DateTime DateOfBirth { get; set; }
 
-    string Address { get; set; } = default!;
+    public string Address { get; set; } = default!;
 
     public DateTime DateOfWork { get; set; }
 

@@ -29,6 +29,7 @@
             <button asp-page-handler="AllWage" class="btn btn-sm btn-secondary">All</button>
             <button asp-page-handler="OnlyTheLatesWage" class="btn btn-sm btn-secondary">Only the lates</button>
             <button asp-page-handler="MediumWage" class="btn btn-sm btn-secondary">Salary / Medium department</button>
+            <button asp-page-handler="EmployeeWage" class="btn btn-sm btn-secondary">Employees wage</button>
         </div>
     </form>
     </div>
@@ -83,7 +84,7 @@
         </div>
     </div>
 }
-else
+else if (Model.IndexData == 1)
 {
     <div class="container">
         <div class="row">
@@ -109,4 +110,41 @@ else
             </table>
         </div>
 </div>
+}
+else if (Model.IndexData == 2)
+{
+    <div class="container">
+        <div class="row">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Job</th>                       
+                        <th scope="col">Date of work</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">DateOfBirth</th>
+                        <th scope="col">Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var wage in Model.WageList)
+                    {
+                        <tr>
+                            <td>@wage.EmployeeName</td>
+                            <td>@wage.DepartmentName</td>
+                            <td>@wage.JobName</td>
+                            <td>@wage.DateOfWork</td>
+                            <td>@wage.Salary</td>
+                            <td>@wage.Phone</td>
+                            <td>@wage.DateOfBirth</td>
+                            <td>@wage.Address</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }

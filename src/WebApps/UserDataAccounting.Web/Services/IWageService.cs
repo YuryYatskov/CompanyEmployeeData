@@ -19,6 +19,9 @@ public interface IWageService
     [Get($"{RouteName}s/medium")]
     Task<GetMediumWagesResponse> GetWagesMedium();
 
+    [Get($"{RouteName}s/employees")]
+    Task<GetWagesResponse> GetEmployeesWages();
+    
     [Get($"{RouteName}s/parameters")]
     Task<GetWagesParametersResponse> GetWagesParameters();
 
